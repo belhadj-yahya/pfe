@@ -1,0 +1,140 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', sans-serif;
+    color: white;
+}
+body{
+    padding: 0px 10px;
+    background: linear-gradient(to bottom, #bd8ba1, #ad6886, #942f5a, #8c1e4e);
+    min-height: 100vh;
+}
+.intro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-block: 70px;
+    p{
+        text-align: center;
+    }
+}
+.center_img{
+    width: 200px;
+}
+.icon1{
+    width: 30px;
+    height: 30px; 
+    align-self: flex-start;
+    visibility: hidden;
+}
+.icon{
+    width: 12px;
+}
+.logo{
+    width: 100px;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.back{
+    font-size: 20px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.small_header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+section{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.first_div {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    flex: 1 1 auto;
+    border-radius: 20px;
+    padding: 20px;
+    min-height: 200px;         
+    height: auto;                
+    background-color: #b3708d;
+    border: 5px solid transparent;
+}
+.first_text{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    p{
+        font-weight: bold;
+        font-size: 22px;
+    }
+}
+.second_div{
+    align-items: center;
+    gap: 20px;
+    display: flex;
+
+}
+.center_img{
+    width: 90px;
+    object-fit: cover;
+    height: 90px;
+    border-radius: 50%;
+}
+.location_p,.phone_p{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.text_div{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+form{
+    margin-top: 200px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.send{
+    background-color: #ec4899;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 17px;
+    width: 100%;
+    max-width: 200px;
+    min-height: 50px;
+    cursor: pointer;
+
+}
+@media (max-width: 700px) {
+    section{
+        flex-direction: column;
+        width: 100%;
+    }
+    .first_div{
+        width: 100%;
+        max-width: 100%;
+    }
+}

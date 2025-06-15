@@ -1,0 +1,219 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', sans-serif;
+}
+body{
+    display: flex;
+}
+main{
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+    background-color: white;
+}
+.content {
+    min-width: max-content;
+    width: 100%;
+}
+
+header{
+    width: 100%;
+    background-color: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 10px;
+    p{
+        font-size: 20px;
+    }
+}
+header img{
+    width: 30px;
+}
+.open{
+    display: none;
+}
+.action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.action input,
+.action select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    min-width: 200px;
+}
+select{
+    background-color: white;
+}
+
+.action button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.action button:hover {
+    opacity: 0.9;
+}
+
+
+
+.action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.action input,
+.action select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+.action button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.action button:hover {
+    opacity: 0.9;
+}
+
+
+
+
+section {
+    padding: 0 20px 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead th {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+    background-color: #f8f8f8;
+}
+
+td.action {
+    display: flex;
+
+    gap: 10px;
+}
+
+td.action button, .last_div button{
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+td.action button:first-child {
+    background-color: black;
+}
+
+td.action button:last-child {
+    background-color: red;
+}
+#add,#edite{
+    margin: auto;
+    min-width: 500px;
+    border-radius: 15px;
+    border: none;
+}
+.main_div,.new_main_div{
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 15px;
+    padding-left: 50px;
+}
+.settings{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding-inline: 5px */
+    p{
+        cursor: pointer;
+        font-size: 20px;
+    }
+}
+.main_div form,.new_main_div form{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.main_div form div,.new_main_div form div{
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    input,select{
+        height: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+}
+.main_div .last_div, .new_main_div .last_div{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 100%;
+}
+.main_div .last_div button,.new_main_div .last_div button{
+    background-color: black;
+    font-weight: bold;
+    border-radius: 0;
+    padding: 10px 30px;
+}
+.main_div .last_div p , .new_main_div .last_div p{
+    cursor: pointer;
+    margin-top: 10px;
+    color: red;
+}
+
+
+

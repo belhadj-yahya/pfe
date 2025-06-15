@@ -1,0 +1,95 @@
+ aside{
+    background-color: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 250px;
+}
+aside h2{
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+aside img{
+    width: 15px;
+    height: 20px;
+}
+aside .blod{
+    width: 12px;
+}
+aside div{
+    width: 100%;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+     gap: 15px; 
+ } 
+ aside div a,.a{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 5px;
+    text-decoration: none;
+    color: rgb(30, 29, 29);
+    width: 100%;
+    padding: 10px 15px;
+}
+.sohpital{
+    opacity: 80%;
+    width: 20px;
+}
+aside div a:hover,.a:hover{
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: #f4f4f5;
+} 
+@media (max-width:700px) {
+    .charts{
+        flex-direction: column;
+    }
+    .cards{
+        flex-wrap: wrap;
+        flex-grow: 1;
+    }
+    .d1{
+        margin-bottom: 10px;
+    }
+    .a{
+        display: flex;
+    }
+    .open{
+        display: block;
+    }
+    .settings{
+        flex-direction: column;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+    .settings *{
+        width: 20%;
+    }
+    .second_settings,.second_settings2{
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    .add_event{
+        margin: 0;
+    }
+    aside{
+        display: none;
+    }
+
+}
+@media (min-width:700px) {
+    .a{
+        display: none;
+    }
+}

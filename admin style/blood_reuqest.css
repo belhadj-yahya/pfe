@@ -1,0 +1,214 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka', sans-serif;
+}
+body{
+    display: flex;
+}
+main{
+    /* position: absolute; */
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+    background-color: white;
+}
+.content {
+    min-width: max-content;
+    width: 100%;
+}
+
+header{
+    width: 100%;
+    background-color: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 10px;
+    p{
+        font-size: 20px;
+    }
+}
+header img{
+    width: 20px;
+}
+.open{
+    display: none;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead th {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+    background-color: #f8f8f8;
+}
+
+
+
+#edite {
+  margin: auto;
+  border: none;
+  border-radius: 12px;
+  padding: 25px 30px;
+  width: 420px;
+  max-width: 90vw;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+#edite h2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #222;
+  text-align: center;
+}
+
+#dialog-content {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+#edite select, textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1.8px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+  color: black;
+  box-sizing: border-box;
+}
+.respond-btn{
+    background-color: white;
+    padding: 10px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.settings select, .settings input{
+    height: 30px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding-left: 10px;
+    border-radius: 5px;
+
+}
+.settings{
+    margin: 20px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+#response_status{
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+.normal{
+    background-color: lightgray;
+    color: gray;
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.urgent{
+    background-color: rgb(245, 191, 90);
+    color: rgb(171, 111, 0);
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.critical{
+    background-color: rgb(250, 151, 151);
+    color: red;
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.pending{
+    background-color: lightgray;
+    color: gray;
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.done{
+    background-color: rgb(126, 241, 120);
+    color: darkgreen;
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.canceled{
+    background-color: rgb(250, 151, 151);
+    color: red;
+    padding: 10px 12px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.dialog-actions {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+#edite button{
+  background-color: black;
+  border: none;
+  color: white;
+  padding: 11px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#cancel-dialog{
+    cursor: pointer;
+}
+
+.settings2{
+    display: flex;
+    margin-bottom: 40px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+

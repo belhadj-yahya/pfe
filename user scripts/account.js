@@ -51,7 +51,8 @@ $(document).ready(function () {
         })
     })
     $('.save').on('click', function (e) {
-        e.preventDefault();
+        e.preventDefault()
+        console.log("hello from save")
         let sheck = true;
         let first_name = $(".new_f_name").val().trim();
         let last_name = $(".new_l_name").val().trim();
@@ -59,6 +60,12 @@ $(document).ready(function () {
         let phone = $(".new_phone").val().trim();
         let city = $(".new_city").val().trim();
         let street = $(".new_street").val().trim();
+        // console.log(first_name)
+        //     console.log(last_name)
+        //     console.log(email)
+        //     console.log(phone)
+        //     console.log(city)
+        //     console.log(street)
         if(!first_name || !last_name || !email || !phone || !city || !street){
             sheck = false;
             $(".error").text("all fields are requred!").css({
@@ -66,7 +73,10 @@ $(document).ready(function () {
                 color: "#9e2830"
             })
         }
-        if(phone.length < 10){
+        if(phone.length != 10 && phone.length < 0){
+            console.log(phone.length)
+            console.log(phone.length == 10)
+            console.log(phone.length > 0)
             sheck = false;
             $(".error").text("phone number not valid!").css({
                 display:"block",
@@ -80,6 +90,7 @@ $(document).ready(function () {
                 url: "",
                 data: {f_name:first_name,l_name:last_name,new_email:email,new_phone:phone,new_city:city,new_street:street},
                 success: function (response) {
+                    console.log(response)
                     let response_data = JSON.parse(response);
                     if(response_data.status == "done"){
                         $(".error").text(response_data.message).css({

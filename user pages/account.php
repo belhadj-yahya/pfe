@@ -13,6 +13,7 @@ $user_info = $user_info->fetch(PDO::FETCH_ASSOC);
 $mimic_name = explode(" ", $user_info["user_full_name"]);
 $mimic_location = explode(" ", $user_info["location"]);
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["delete"])) {
         unset($_SESSION["user"]);
@@ -20,13 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_destroy();
         echo "ok";
         exit();
-    } else {
-        $sheck_email_and_phone = $con->prepare("SELECT user_id FROM users WHERE user_email = ? OR phone = ? and user_id != ?");
+    } else {        
+        $sheck_email_and_phone = $con->prepare("SELECT user_id FROM users WHERE (user_email = ? OR phone = ?) and user_id != ?");
         $sheck_email_and_phone->execute([$_POST["new_email"], $_POST["new_phone"], $_SESSION["user"]["user_id"]]);
         $sheck_email_and_phone = $sheck_email_and_phone->fetch(PDO::FETCH_ASSOC);
         if (empty($sheck_email_and_phone)) {
             $update_user = $con->prepare("UPDATE users SET user_full_name = ?,user_email = ?,location = ?,phone = ? where user_id = ?");
-            $update_user->execute([$_POST["f_name"] . $_POST["l_name"], $_POST["new_email"], $_POST["new_city"] . $_POST["new_street"], $_POST["new_phone"], $_SESSION["user"]["user_id"]]);
+            $update_user->execute([$_POST["f_name"] ." ". $_POST["l_name"], $_POST["new_email"], $_POST["new_city"] ." ". $_POST["new_street"], $_POST["new_phone"], $_SESSION["user"]["user_id"]]);
             echo json_encode(["status" => "done", "message" => "your information has been updated"]);
         } else {
             echo json_encode(["status" => "error", "message" => "phone number or email already used"]);
@@ -146,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h1 class="h1">Profile Information</h1>
                         <div class="buttons">
                             <button class="open">Edite Profile</button>
-                            <button class="save">Save</button>
+                            <button class="save">save</button>
                             <button class="cancel">Cancel</button>
                         </div>
                     </div>

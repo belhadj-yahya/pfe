@@ -112,8 +112,8 @@ section{
 }
 .icon1,.icon2{
     background-color: #f06dae;
-    width: 152px;
-    height: 35px;
+    width: 54px;
+        height: 45px;
     border: none;
     border-radius: 50%;
     align-self: center;
@@ -129,15 +129,16 @@ section{
 .news_des,.event_text{
      display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4; /* Show up to 9 lines */
+    -webkit-line-clamp: 4; 
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.5;       /* Adjust based on your font size */
-    max-height: calc(1.5em * 9); /* 9 lines of height */
+    line-height: 1.5;       
+    max-height: calc(1.5em * 9); 
 }
 .icon_text{
     display: flex;
     gap: 10px;
+    width: 641px;
 }
 .icon_text div{
    color: white;

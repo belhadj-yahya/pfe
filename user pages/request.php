@@ -35,9 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["data"] == "ok") {
         $date = new DateTime($_POST["date"]);
         $formated_date = $date->format("Y-m-d");
-        $last_donation = new DateTime($last_don["donation_date"]);
-        $diffrent = $date->diff($last_donation);
-        $days_appart = $diffrent->days;
+        if(!empty($last_don)){
+            $last_donation = new DateTime($last_don["donation_date"]);
+            $diffrent = $date->diff($last_donation);
+            $days_appart = $diffrent->days;
+        }
+        
 
         if (isset($_SESSION["event_id"])) {
             $shesk_if_already_there = $con->query("SELECT * FROM donation_request where news_event_id = " . $_SESSION["event_id"] . " AND user_id =" . $_SESSION["user"]["user_id"] . " AND status = 'pending'");
@@ -54,28 +57,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         } else if (isset($_SESSION["center_id"])) {
-            if ($days_appart < 15) {
-                $wait_time = 15 - $days_appart;
-                echo json_encode(["status" => "error", "message" => "You are only $days_appart days apart from your last donation. Please wait $wait_time more day(s) to donate again"]);
-            } else {
-                $blood_supply = $con->query("SELECT blood_supplay.availible_unit,max_units,blood_type_name, center_id FROM blood_supplay JOIN blood_types on blood_supplay.blood_type_id = blood_types.blood_type_id WHERE blood_supplay.center_id = " . $_SESSION['center_id']);
-                $blood_supply = $blood_supply->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($blood_supply as $type) {
-                    if ($_SESSION["user"]["blood_type"] == $type["blood_type_name"]) {
-                        if ($type["availible_unit"] < $type["max_units"]) {
-                            $add_request = $con->prepare("INSERT INTO donation_request(status,request_date,donation_date,donation_time_stamp,news_event_id,center_id,user_id) VALUES('pending',NOW(),?,?,NULL,?,?)");
-                            $add_request->execute([$formated_date, $_POST["time_stemp"], $_SESSION["center_id"], $_SESSION["user"]["user_id"]]);
-
-                            echo json_encode(["status" => "done", "message" => "your donation request was added"]);
-                        } else {
-                            echo json_encode(["status" => "error", "message" => "Your blood type is at max units in the donation center"]);
-                        }
+           
+            if(isset($days_appart)){
+                if ($days_appart < 15) {
+                    //does get to this place when the days appart exist
+                    $wait_time = 15 - $days_appart;
+                    echo json_encode(["status" => "error", "message" => "You are only $days_appart days apart from your last donation. Please wait $wait_time more day(s) to donate again"]);
+                    exit();
+                }
+            }
+            
+            $blood_supply = $con->query("SELECT blood_supplay.availible_unit,max_units,blood_type_name, center_id FROM blood_supplay JOIN blood_types on blood_supplay.blood_type_id = blood_types.blood_type_id WHERE blood_supplay.center_id = " . $_SESSION['center_id']);
+            $blood_supply = $blood_supply->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($blood_supply as $type) {
+                if ($_SESSION["user"]["blood_type"] == $type["blood_type_name"]) {
+                    if ($type["availible_unit"] < $type["max_units"]) {
+                        $add_request = $con->prepare("INSERT INTO donation_request(status,request_date,donation_date,donation_time_stamp,news_event_id,center_id,user_id) VALUES('pending',NOW(),?,?,NULL,?,?)");
+                        $add_request->execute([$formated_date, $_POST["time_stemp"], $_SESSION["center_id"], $_SESSION["user"]["user_id"]]);
+                        echo json_encode(["status" => "done", "message" => "your donation request was added"]);
+                    } else {
+                        echo json_encode(["status" => "error", "message" => "Your blood type is at max units in the donation center"]);
                     }
                 }
             }
         }
-        unset($_SESSION["event_id"]);
-        unset($_SESSION["center_id"]);
         exit();
     } elseif ($_POST["data"] == "date_change") {
         $dateString = $_POST["new_date"];
@@ -100,6 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         exit();
     }
+    unset($_SESSION["event_id"]);
+        unset($_SESSION["center_id"]);
 }
 ?>
 

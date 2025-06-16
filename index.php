@@ -1,15 +1,15 @@
 <?php
 require_once "db_con/cone.php";
 session_start();
-$password = password_hash("123456789", PASSWORD_DEFAULT);
-// $add = $con->exec("INSERT INTO admins(admen_full_name,admen_email,admen_password,location,phone,center_id) VALUES('yahya belhadj','yahya@gmail.com','$password','tanger sa9aya','06547125',7)");
+// $password = password_hash("123456789", PASSWORD_DEFAULT);
+// $add = $con->exec("INSERT INTO admins(admen_full_name,admen_email,admen_password,location,phone,center_id) VALUES('yahya belhadj2','sami@gmail.com','$password','tanger KASBAH','065471245',8)");
 
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["limit"])) {
-        $news_data = $con->query("SELECT title,description,type FROM news_events where data_of_relais > now() and type = 'news' limit 5");
-        $event_data = $con->query("SELECT title,description,type FROM news_events where data_of_relais > now() and type = 'event' limit 5");
+        $news_data = $con->query("SELECT title,description,type FROM news_events where data_of_relais <= now() and type = 'news' limit 5");
+        $event_data = $con->query("SELECT title,description,type FROM news_events where data_of_relais <= now() and type = 'event' limit 5");
         $news_data = $news_data->fetchAll(PDO::FETCH_ASSOC);
         $event_data = $event_data->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(["news" => $news_data, "events" => $event_data]);
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="top">
                 <div class="first_above_text">
                     <h1>News</h1>
-                    <a href="user pages/news_and_events.php">See More ></a>
+                    <a href="user pages/blood_need_events.php">See More ></a>
                 </div>
                 <div class="first_text">
                     <button class="icon1 first_pre_button"><img src="/pfe/user images/arrow-left-solid.svg" class="icon1_img" alt="error"></button>
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="bottom">
                 <div class="second_above_text">
                     <h1>Events</h1>
-                    <a href="/user pages/news_and_events.php">See More ></a>
+                    <a href="user pages/blood_need_news.php">See More ></a>
                 </div>
                 <div class="second_text">
                     <button class="icon2 first_pre_button"><img src="/pfe/user images/arrow-left-solid.svg" class="icon2_img" alt="error"></button>

@@ -1,89 +1,88 @@
-$(document).ready(function(){
-    console.log($(".news_des"));
+$(document).ready(function () {
     $.ajax({
         type: "POST",
         url: "index.php",
-        data: {limit:10},
+        data: { limit: 10 },
         success: function (response) {
-            let data =JSON.parse(response);
+            let data = JSON.parse(response);
+
             let news_index = 0;
             let events_index = 0;
-            let news_array = [];
-            let events_array = [];
-            function go_next_news_or_back(array,index){
-                console.log(array)
-                console.log(index)
-                if(index < array.length && index > 0){
-                    console.log("index :"+index)
-                $(".news_title").text(array[index].title);
-                $(".news_des").text(array[index].description);   
+            let news_array = data.news || [];
+            let events_array = data.events || [];
+
+            function update_news(index) {
+                if (news_array[index]) {
+                    $(".news_title").text(news_array[index].title);
+                    $(".news_des").text(news_array[index].description);
                 }
             }
-            function go_next_event_or_back(array,index){
-                console.log(array)
-                console.log(index)
-                if(index < array.length || index > 0){
-                    $(".event_title").text(array[index].title);
-                    $(".event_text").text(array[index].description);
+
+            function update_event(index) {
+                if (events_array[index]) {
+                    $(".event_title").text(events_array[index].title);
+                    $(".event_text").text(events_array[index].description);
                 }
             }
-            data.news.forEach(element => {
-                news_array.push(element)
-            });
-            data.events.forEach(element => {
-                events_array.push(element)
-            });
-            $(".news_title").text(news_array[news_index].title);
-            $(".news_des").text(news_array[news_index].description);
-            $(".event_title").text(events_array[events_index].title);
-            $(".event_text").text(events_array[events_index].description);
-            $("button").on("click", function () {
-    let what_to_do = $(this).attr("class");
 
-    switch (what_to_do) {
-        case "icon1 first_next_button":
-            if (news_index < news_array.length - 1) {
-                news_index++;
-                go_next_news_or_back(news_array, news_index);
-            }else{
-                $(".news_title").text("Thats All The News");
-                $(".news_des").text("Go To Events And News To See More");
-            }
-            break;
-        case "icon1 first_pre_button":
-            if (news_index > 0) {
-                news_index--;
-                go_next_news_or_back(news_array, news_index);
-            }
-            break;
-        case "icon2 first_next_button":
-            console.log("clicked second nex")
-            if (events_index < events_array.length - 1) {
-                events_index++;
-                go_next_event_or_back(events_array, events_index);
-            }else{
-                $(".event_title").text("Thats All The Events");
-                $(".event_text").text("Go To Events And News To See More");
-            }
-            break;
-        case "icon2 first_pre_button":
-            if (events_index > 0) {
-                events_index--;
-                go_next_event_or_back(events_array, events_index);
-            }
-            break;
-    }
-});
+            // Initial render
+            update_news(news_index);
+            update_event(events_index);
+            console.log("Initial news:", news_array);
+            console.log("Initial events:", events_array);
 
-            console.log(news_array);
-            console.log(events_array);
-            
+            $(".icon1.first_next_button").on("click", function () {
+                console.log("news_index in go next button is: " + news_index)
+                if (news_index < news_array.length - 1) {
+                    news_index++;
+                    update_news(news_index);
+                    console.log("News index after next:", news_index);
+                } else {
+                    $(".news_title").text("That's All The News");
+                    $(".news_des").text("Go To Events And News To See More");
+                }
+            });
+
+            // NEWS PREV
+            $(".icon1.first_pre_button").on("click", function () {
+                console.log("news_index in go back is: " + news_index)
+                console.log("Clicked NEWS back", news_index);
+                if (news_index > 0) {
+                    update_news(news_index);
+                    console.log("we are in if news_index > 0")
+                    news_index--;
+                }else{
+                    update_news(news_index);
+                }
+            });
+
+            // EVENTS NEXT
+            $(".icon2.first_next_button").on("click", function () {
+                console.log("event_index in go next is: " + events_index)
+                if (events_index < events_array.length - 1) {
+                    events_index++;
+                    update_event(events_index);
+                    console.log("Event index after next:", events_index);
+                } else {
+                    $(".event_title").text("That's All The Events");
+                    $(".event_text").text("Go To Events And News To See More");
+                }
+            });
+
+            // EVENTS PREV
+            $(".icon2.first_pre_button").on("click", function () {
+                console.log("event_index in go back is: " + events_index)
+                if (events_index > 0) {
+                update_event(events_index);
+                    events_index--;
+                    console.log("Event index after prev:", events_index);
+                }else{
+                    update_event(events_index);
+                }
+            });
         },
-        error: function(one,two,three){
-            console.log(three)
+        error: function (xhr, status, error) {
+            console.log("Error:", error);
         }
     });
-   
-    
-
-})
+});

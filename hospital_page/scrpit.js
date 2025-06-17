@@ -20,7 +20,10 @@ $(document).ready(function () {
         let allFilled = values.every(val => val !== "");
 
         if (!allFilled) {
-            $(".error").text("All fields are required").css("color","red").show()
+            $(".error").text("All fields are required").css({
+                color:"red",
+                display:"block"
+            })
             return;
         }
             $(".error").hide()
@@ -45,9 +48,15 @@ $(document).ready(function () {
                 console.log(response)
                 let data = JSON.parse(response);
                 if(data.status == "done"){
-                    $(".error").text(data.message).css("color","green").show()
+                    $(".error").text(data.message).css({
+                        color:"red",
+                        display:"block"
+                    })
                 }else{
-                    $(".error").text(data.message).css("color","red").show()
+                    $(".error").text(data.message).css({
+                        color:"green",
+                        display:"block"
+                    })
                 }
                 console.log("Server response:", response);
             },

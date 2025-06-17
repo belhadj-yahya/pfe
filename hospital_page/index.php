@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
     $units = intval($units);
-    $stmt = $con->prepare("INSERT INTO blood_request (needed_units,request_stats,hospital_name,location,status,created_at,blood_type_id,center_id,contact,needed_at,Description) VALUES (:units,'pending',:hospital,:location,:status,NOW(),:blood_type,:center_id,:contact,:needed_at,:description)");
+    $stmt = $con->prepare("INSERT INTO blood_request (needed_units,request_status,hospital_name,location,status,created_at,blood_type_id,center_id,contact,needed_at,Description) VALUES (:units,'pending',:hospital,:location,:status,NOW(),:blood_type,:center_id,:contact,:needed_at,:description)");
     $stmt->execute([
         ':units' => $units,
         ':hospital' => $hospital_name,

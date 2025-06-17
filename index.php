@@ -1,8 +1,8 @@
 <?php
 require_once "db_con/cone.php";
 session_start();
-// $password = password_hash("123456789", PASSWORD_DEFAULT);
-// $add = $con->exec("INSERT INTO admins(admen_full_name,admen_email,admen_password,location,phone,center_id) VALUES('yahya belhadj2','sami@gmail.com','$password','tanger KASBAH','065471245',8)");
+unset($_SESSION["center_id"]);
+unset($_SESSION["event_id"]);
 
 
 
@@ -39,14 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h3>Support Our Mission</h3>
             <p>We're dedicated to making a positive impact in our community through innovative programs and initiatives. Your support helps us continue our work and reach more people in need.</p>
             <p>Every contribution makes a difference, no matter the size. Together, we can create meaningful change and build a better future for everyone.</p>
-            <a href="/user pages/select_center.php" class="sned_to">Donate Now <img src="/pfe/user images/arrow-right-solid.svg" class="sned_to_img" alt=""></a>
+            <a href="user pages/select_center.php" class="sned_to">Donate Now <img src="/pfe/user images/arrow-right-solid.svg" class="sned_to_img" alt=""></a>
             <p>Our organization is committed to transparency and accountability. We ensure that your donations are used effectively to support our programs and the communities we serve.</p>
         </div>
         <div class="left">
             <div class="top">
                 <div class="first_above_text">
                     <h1>News</h1>
-                    <a href="user pages/blood_need_events.php">See More ></a>
+                    <a href="user pages/blood_need_news.php">See More ></a>
                 </div>
                 <div class="first_text">
                     <button class="icon1 first_pre_button"><img src="/pfe/user images/arrow-left-solid.svg" class="icon1_img" alt="error"></button>

@@ -100,6 +100,11 @@ $(document).ready(function () {
                         setTimeout(() => {
                             window.location.href = "/pfe/user pages/account.php";
                         }, 1200);
+                    }else{
+                        $(".error").text(response_data.message).css({
+                            color:"red",
+                            display:"block"
+                        })
                     }
                 }
             });

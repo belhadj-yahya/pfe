@@ -12,8 +12,6 @@ $user_info = $con->query("SELECT users.*,blood_type_name FROM users JOIN blood_t
 $user_info = $user_info->fetch(PDO::FETCH_ASSOC);
 $mimic_name = explode(" ", $user_info["user_full_name"]);
 $mimic_location = explode(" ", $user_info["location"]);
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["delete"])) {
         unset($_SESSION["user"]);

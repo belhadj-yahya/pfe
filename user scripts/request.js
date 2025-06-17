@@ -15,12 +15,20 @@ $(document).ready(function () {
         success: function (response) {
             data = JSON.parse(response);
             let startDate = new Date();
-            let endDate = new Date(data.end_date);
-                $("#datepicker").datepicker({
-                    beforeShowDay: function(date) {
+            $("#datepicker").datepicker({
+                beforeShowDay: function(date) {
+                    if(data.end_date == ""){
+                        return [date >= startDate];
+                    }else{
+                        let endDate = new Date(data.end_date);
                         return [date >= startDate && date <= endDate];
                     }
-                });
+                }
+            });
+            
+            
+            
+               
                 $("#datepicker").on("change",function(){
                     console.log("date has change");
                     $.post("/pfe/user pages/request.php",{data:"date_change",new_date:$("#datepicker").val()},function(response){
@@ -38,8 +46,9 @@ $(document).ready(function () {
                         $(".time_stamp").html(html);
                     },)
                 })
-                $(".send").on("click",function(e){
+                $("input[type='submit']").on("click",function(e){
                     e.preventDefault();
+                    console.log("hello from send")
                     if($("#datepicker").val() == ""){
                         $(".error").text("Please fill the date field").css({
                             display: "block",
@@ -73,7 +82,9 @@ $(document).ready(function () {
                         console.log("we are in sheck = true")
                         $.post("/pfe/user pages/request.php", {data:"ok",date:$("#datepicker").val(),time_stemp:select_value},
                             function (data) {
+                                console.log('-------------------------------------')
                                 console.log(data);
+                                console.log('-------------------------------------')
                                 console.log("all things are right we are befoe the data display");
                                 let new_data = JSON.parse(data);
                                 if(new_data.status == "done"){

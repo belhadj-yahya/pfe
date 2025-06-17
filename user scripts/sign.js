@@ -1,7 +1,7 @@
 $(document).ready(function(){
         let password_error = $(".password_error")
         let confirm_error = $(".confirm_error")
-        let form_data;
+        
 
         let array_of_errors = [$(".f_name_error"),$(".l_name_error"),$(".email_error"),$(".phone_error"),$(".city_error"),$(".street_error"),$(".select_error")];
     $(".create").on("click",function(e){
@@ -28,19 +28,37 @@ $(document).ready(function(){
             }
         })
         if(password.length < 8){
-            password_error.css("display","block");
+            password_error.fadeIn();
             sheck = false;
+        }else{
+            password_error.fadeOut();
         }
         if(confim_password.length < 8){
-            confirm_error.css("display","block")
+            confirm_error.fadeIn();
             sheck = false;
-        }
-        if(password === confim_password){
         }else{
-            confirm_error.text("both passwords need to match").css("display","block")
-            password_error.text("both passwords need to match").css("display","block");
-            sheck = false;
+            confirm_error.fadeOut();
         }
+        console.log("we are here baby")
+        if(phone_number.length < 10 || typeof Number(phone_number) != "number"){
+            console.log("we are in if phone is not valid")
+            console.log(phone_number.length)
+            console.log(typeof Number(phone_number))
+            $(".phone_error").text("phone number is not valid").fadeIn();
+            sheck = false
+        }else{
+            $(".phone_error").fadeOut();
+        }
+        
+        if(password != confim_password || confim_password == ""){
+            confirm_error.text("both passwords need to match").fadeIn();
+            password_error.text("both passwords need to match").fadeIn();
+            sheck = false;
+        }else{
+            confirm_error.fadeOut();
+            password_error.fadeOut();
+        }
+        
         if(sheck){
             let form_data = new FormData();
             form_data.append('f_name', f_name);
@@ -60,7 +78,7 @@ $(document).ready(function(){
                 success: function (response) {
                     let something = JSON.parse(response)
                     if(something.class != "done"){
-                        $(something.class).text(something.message).css("display","block")
+                        $(something.class).text(something.message).fadeIn()
                     }else{
                         window.location.href = "../index.php"
                     }

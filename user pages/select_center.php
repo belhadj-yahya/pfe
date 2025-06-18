@@ -4,6 +4,7 @@ session_start();
 if (!isset($_SESSION["user"])) {
     header("Location: login.php");
 }
+unset($_SESSION["event_id"]);
 $centers = $con->query("SELECT * FROM donation_centers");
 $centers = $centers->fetchAll(PDO::FETCH_ASSOC);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

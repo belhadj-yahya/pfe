@@ -20,22 +20,26 @@ $(document).ready(function(){
         if(email != ""){
             $.post("/pfe/user pages/password.php", {email:email,temp_password:tempPassword},
                 function (response) {
+                    console.log(response)
                     let data = JSON.parse(response);
                     if(data.status == "ok"){
                         $(".first_form").css("display","none");
                         $(".second_form").css("display","flex");
                         user_id = data.user_id;
+                    }else{
+                        $(".errors1").text(data.message).css("color","#ff8484")
                     }
                     console.log(response)
                 },
             );
         }else{
-            console.log("email is empty")
+            $(".errors1").text("you have to enter an email").css("color","rgb(255, 136, 136)");
         }
     })
     $(".second_send").on("click",function(e){
         e.preventDefault();
-        let user_temp_password = $(".send2").val().trim();
+        let user_temp_password = $(".send2").val();
+        
         if(user_temp_password === tempPassword){
             $(".second_form").css("display","none");
             $(".last_form").css("display","flex");
@@ -51,7 +55,14 @@ $(document).ready(function(){
             if(new_password === confirm_new_password){
                 $.post("/pfe/user pages/password.php",{new_pass:new_password,confirm_pass:confirm_new_password,id:user_id},
                     function(response){
+                        console.log(user_id)
                         console.log(response)
+                        if(response == "ok"){
+                            console.log("we are in if response = ok");
+                            window.location.href = "login.php";
+                        }else{
+                            console.log(response == "ok");
+                        }
                     }
                 )
             }else{

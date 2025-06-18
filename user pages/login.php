@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (!empty($user)) {
                     if (strlen($password) >= 8) {
                         if (password_verify($password, $user["user_password"])) {
-                            $_SESSION["user"] = ["user_id" => $user["user_id"], "blood_type" => $user["blood_type_id"],"blood_type_name" => $user["blood_type_name"]];
+                            $_SESSION["user"] = ["user_id" => $user["user_id"], "blood_type" => $user["blood_type_id"], "blood_type_name" => $user["blood_type_name"]];
                             echo json_encode(["p_class" => "go", "message" => "incurect password", "on" => [".email"], "value" => ""]);
                             exit();
                         } else {
@@ -74,14 +74,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="flex">
                 <div class="choice">
                     <p><img src="/pfe/user images/lock-solid.svg" alt=""> Password:</p>
-                    <a href="return_pass.php">Forgot password?</a>
+                    <a href="../user pages/password.php">Forgot password?</a>
                 </div>
                 <input type="password" name="password" class="password" id="" placeholder="Enter your password">
             </div>
             <p class="error2"></p>
             <div class="flex last">
                 <form action="" method="post">
-                    <p class="lastp">Back to Home</p>
+                    <a href="../index.php" class="lastp">Back to Home</a>
                     <input type="submit" class="sign" value="Sign In">
                     <p class="error"></p>
                 </form>

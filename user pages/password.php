@@ -37,18 +37,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "Email could not be sent. Error: {$mail->ErrorInfo}";
                 }
             } else {
-                echo "there is no user with this email";
+                echo json_encode(["status" => "error", "message" => "there is no user with this email"]);
             }
         } else {
-            echo "email is not valid";
+            echo json_encode(["status" => "error", "message" => "email is not valid"]);
         }
         exit();
     } else if (isset($_POST["new_pass"])) {
         $pass = password_hash($_POST["new_pass"], PASSWORD_DEFAULT);
-        echo "new passwordis: " . $_POST["new_pass"] . " user id :" . $_POST["id"];
+        $change = $con->prepare("UPDATE users SET user_password = ? WHERE user_id = ?");
+        $change->execute([$pass, $_POST["id"]]);
+        echo "ok";
         exit();
-        // $change = $con->prepare("UPDATE users SET user_password = ? WHERE user_id = ?");
-        // $change->execute([$pass, $_POST["id"]]);
     }
 }
 
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
     <script src="/pfe/jquery-3.7.1.js"></script>
-    <script src="/pfe/user scripts/password.js"></script>
+    <script src="/pfe/user scripts/password.js?v=1.0.8"></script>
 </body>
 
 </html>

@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 6.0.0-dev+20250611.a72a6b040c
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 18, 2025 at 11:42 AM
+-- Generation Time: Jun 18, 2025 at 11:01 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -222,22 +222,17 @@ CREATE TABLE `donation_request` (
 --
 
 INSERT INTO `donation_request` (`request_id`, `status`, `request_date`, `donation_date`, `donation_time_stamp`, `news_event_id`, `center_id`, `user_id`) VALUES
-(7, 'pending', '2025-06-13', '2025-06-20', 'morning', NULL, 7, 3),
-(8, 'pending', '2025-06-13', '2025-06-20', 'morning', NULL, 7, 3),
-(9, 'pending', '2025-06-13', '2025-06-20', 'afternone', NULL, 7, 3),
-(10, 'pending', '2025-06-13', '2025-06-20', 'evining', NULL, 7, 3),
-(11, 'pending', '2025-06-13', '2025-06-20', 'morning', NULL, 7, 3),
-(13, 'pending', '2026-06-01', '2025-06-20', 'morning', NULL, 7, 3),
-(15, 'pending', '2025-06-14', '2025-07-11', 'morning', NULL, 11, 3),
-(16, 'done', '2025-06-16', '2025-06-18', 'morning', NULL, 8, 6),
-(17, 'pending', '2025-06-16', '2025-07-16', 'morning', NULL, 8, 6),
-(18, 'pending', '2025-06-17', '2025-07-16', 'afternone', NULL, 11, 7),
-(19, 'pending', '2025-06-17', '2025-09-27', 'morning', NULL, 11, 7),
+(7, 'pending', '2025-06-13', '2025-07-01', 'morning', NULL, 7, 3),
+(8, 'pending', '2025-06-13', '2025-07-20', 'morning', NULL, 7, 3),
+(18, 'pending', '2025-06-17', '2025-07-12', 'afternone', NULL, 11, 7),
+(19, 'pending', '2025-06-17', '2025-07-27', 'morning', NULL, 11, 7),
 (20, 'pending', '2025-06-17', '2025-06-20', 'evining', 18, NULL, 7),
 (26, 'pending', '2025-06-18', '2025-06-20', 'afternone', 18, NULL, 19),
 (27, 'pending', '2025-06-18', '2025-07-10', 'morning', NULL, 8, 19),
 (28, 'pending', '2025-06-18', '2025-06-20', 'afternone', NULL, 11, 20),
-(29, 'pending', '2025-06-18', '2025-07-07', 'morning', NULL, 7, 20);
+(30, 'pending', '2025-06-18', '2025-06-25', 'afternone', NULL, 11, 4),
+(31, 'pending', '2025-06-18', '2025-07-16', 'evining', NULL, 8, 4),
+(37, 'pending', '2025-06-18', '2025-08-22', 'morning', NULL, 8, 3);
 
 -- --------------------------------------------------------
 
@@ -289,12 +284,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_full_name`, `user_email`, `user_password`, `location`, `phone`, `blood_card_photo`, `blood_type_id`) VALUES
-(3, 'yahya belhadj', 'yahya.belhadj.pro@gmail.com', '$2y$10$wGKYb7POGHkiAq4sWiSU5ONV9rYpft1e9PK0ZPDFDe60oD4C2Yzou', 'tanger kasbah', '0681321347', NULL, 10),
-(4, 'wahiba basri', 'jomanalola25@gmail.com', '$2y$10$O/UxSWX3QyKrLIXi1zzcQeBQyAQRcE6GZevXtn2JZ6m9av9EOVPVy', 'tanger kasbah', '0606061877', NULL, 16),
+(3, 'yahya belhadj', 'yahya.belhadj.pro@gmail.com', '$2y$10$8W94u9NETfgy6/Ouuc9MWe.Jfqiqjzp62IXUSrMw45k.1j3NvTD1W', 'tanger kasbah', '0681321347', NULL, 10),
+(4, 'wahiba BASRI', 'jomanalola25@gmail.com', '$2y$10$VPOOvXwyZE8f9bdAb7JNuOVWpb8.rwq8ZISamGcqwE9/GtCJ1H8..', 'tanger kasbah', '0606061877', NULL, 16),
 (6, 'monir MRISI', 'marnissimounir05@gmail.com', '$2y$10$zTLExj33GHwsSHh2kUHDDuJ1VIXy67reiaegaMZb1rjka/NtcIg.y', 'darbaida dradb', '1234567891', NULL, 17),
 (7, 'sami basri', 'jornojovana9@gmail.com', '$2y$10$4g/CZvfCCp5Iy3qdOhBwjexPM0wlheHgZuHYDOFZgy33qHbUzBTXO', 'tanger mrchan', '1234567892', NULL, 10),
 (19, 'brahim rabi3', 'brahim@gmail.com', '$2y$10$XYflsFZ51oVg/VjdSJeu0O50HPBdKk7jYNC5Po5/Fr94Bvtp2jTHa', 'tanger sakaya', '1233214354', NULL, 17),
-(20, 'nour cherif', 'nourchirawi12@gmail.com', '$2y$10$hypqZZ44mJuNexxo5SiA5.ipYaRe2zKMWnRlDgGzpUAJLHi6f3YbG', 'tanger DRADEB', '12245436543', NULL, 10);
+(20, 'nour cherif', 'nourchirawi12@gmail.com', '$2y$10$hypqZZ44mJuNexxo5SiA5.ipYaRe2zKMWnRlDgGzpUAJLHi6f3YbG', 'tanger DRADEB', '12245436543', NULL, 10),
+(21, 'mohamed sombol', 'sombol@gmail.com', '$2y$10$1DNLEo.x3/Vxvz9bHdTsg.4cdz9A8bSTcoDlz.0qNvuMJ0hRnuO0S', 'tanger hayani', '1213456453', NULL, 11);
 
 --
 -- Indexes for dumped tables
@@ -396,7 +392,7 @@ ALTER TABLE `donation_centers`
 -- AUTO_INCREMENT for table `donation_request`
 --
 ALTER TABLE `donation_request`
-  MODIFY `request_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `request_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `news_events`
@@ -408,7 +404,7 @@ ALTER TABLE `news_events`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables

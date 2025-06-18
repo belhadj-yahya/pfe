@@ -2,6 +2,7 @@
 require_once "../db_con/cone.php";
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    unset($_SESSION["center_id"]);
     $_SESSION["event_id"] = $_POST["id"];
     echo "done";
     exit();
@@ -10,8 +11,6 @@ $blood_needs = $con->query("SELECT news_event_id,blood_type_needed,title,descrip
 $blood_needs = $blood_needs->fetchAll(PDO::FETCH_ASSOC);
 $news = $con->query("SELECT data_of_relais,title,description,center_name FROM news_events JOIN donation_centers on news_events.center_id = donation_centers.center_id WHERE type = 'news' AND data_of_relais <= NOW()");
 $news = $news->fetchAll(PDO::FETCH_ASSOC);
-
-
 
 ?>
 <!DOCTYPE html>

@@ -79,12 +79,21 @@ margin-bottom: 100px;
         gap: 10px;
     }
 }
-.pending{
+.canceled{
     background-color: rgb(162, 100, 100);
     padding: 10px 20px;
     border-radius: 25px;
     p{
         color: rgb(230, 163, 163);
+        font-weight: bold;
+    }
+}
+.pending{
+    background-color: lightgray;
+    padding: 10px 20px;
+    border-radius: 25px;
+    p{
+        color: gray;
         font-weight: bold;
     }
 }

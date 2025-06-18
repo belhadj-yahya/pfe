@@ -4,9 +4,9 @@ session_start();
 if (!isset($_SESSION["user"])) {
     header("Location: /pfe/index.php");
 }
-$normal_request = $con->query("SELECT center_name,center_location,donation_date,status FROM donation_request JOIN donation_centers on donation_request.center_id = donation_centers.center_id WHERE user_id = " . $_SESSION["user"]["user_id"]);
+$normal_request = $con->query("SELECT center_name,center_location,donation_date,donation_time_stamp,status FROM donation_request JOIN donation_centers on donation_request.center_id = donation_centers.center_id WHERE user_id = " . $_SESSION["user"]["user_id"]);
 $normal_request = $normal_request->fetchAll(PDO::FETCH_ASSOC);
-$events_donation = $con->query("SELECT title,center_name,donation_date,center_location,status FROM donation_request as d JOIN news_events as n on d.news_event_id = n.news_event_id JOIN donation_centers as c ON n.center_id = c.center_id  WHERE d.news_event_id is NOT NULL AND user_id = " . $_SESSION["user"]["user_id"]);
+$events_donation = $con->query("SELECT title,center_name,donation_date,center_location,donation_time_stamp,status FROM donation_request as d JOIN news_events as n on d.news_event_id = n.news_event_id JOIN donation_centers as c ON n.center_id = c.center_id  WHERE d.news_event_id is NOT NULL AND user_id = " . $_SESSION["user"]["user_id"]);
 $events_donation = $events_donation->fetchAll(PDO::FETCH_ASSOC);
 $user_info = $con->query("SELECT users.*,blood_type_name FROM users JOIN blood_types on users.blood_type_id = blood_types.blood_type_id WHERE user_id = " . $_SESSION["user"]["user_id"]);
 $user_info = $user_info->fetch(PDO::FETCH_ASSOC);
@@ -19,13 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_destroy();
         echo "ok";
         exit();
-    } else {        
+    } else {
         $sheck_email_and_phone = $con->prepare("SELECT user_id FROM users WHERE (user_email = ? OR phone = ?) and user_id != ?");
         $sheck_email_and_phone->execute([$_POST["new_email"], $_POST["new_phone"], $_SESSION["user"]["user_id"]]);
         $sheck_email_and_phone = $sheck_email_and_phone->fetch(PDO::FETCH_ASSOC);
         if (empty($sheck_email_and_phone)) {
             $update_user = $con->prepare("UPDATE users SET user_full_name = ?,user_email = ?,location = ?,phone = ? where user_id = ?");
-            $update_user->execute([$_POST["f_name"] ." ". $_POST["l_name"], $_POST["new_email"], $_POST["new_city"] ." ". $_POST["new_street"], $_POST["new_phone"], $_SESSION["user"]["user_id"]]);
+            $update_user->execute([$_POST["f_name"] . " " . $_POST["l_name"], $_POST["new_email"], $_POST["new_city"] . " " . $_POST["new_street"], $_POST["new_phone"], $_SESSION["user"]["user_id"]]);
             echo json_encode(["status" => "done", "message" => "your information has been updated"]);
         } else {
             echo json_encode(["status" => "error", "message" => "phone number or email already used"]);
@@ -79,18 +79,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="request_div2">
                                     <div>
                                         <img src="\pfe\user images\calnder_pink.svg" class="icon" alt="">
-                                        <p>{$request["donation_date"]}</p>
+                                        <p>{$request["donation_date"]} {$request["donation_time_stamp"]}</p>
                                     </div>
                                     <div>
                                         <img src="\pfe\user images\location_pink.svg" class="icon" alt="">
                                         <p>{$request["center_location"]}</p>
                                     </div>
-                                    <div>
+                                <div>
                         HTML;
                     if ($request["status"] == "pending") {
                         echo "<div class='pending'><p>pending</p></div>";
                     } else if ($request["status"] == "done") {
                         echo "<div class='done'><p>done</p></div>";
+                    } else {
+                        echo "<div class='canceled'><p>canceled</p></div>";
                     }
                     echo <<<HTML
                                     </div>
@@ -117,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="request_div2">
                                     <div>
                                         <img src="\pfe\user images\calnder_pink.svg" class="icon" alt="">
-                                        <p>{$request["donation_date"]}</p>
+                                        <p>{$request["donation_date"]} {$request["donation_time_stamp"]}</p>
                                     </div>
                                     <div>
                                         <img src="\pfe\user images\location_pink.svg" class="icon" alt="">

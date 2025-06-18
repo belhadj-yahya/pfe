@@ -12,8 +12,8 @@ if (!isset($_SESSION["center_id"]) && !isset($_SESSION["event_id"])) {
 }
 $center_data_for_both_cases;
 //here we will get the last date of donation that the user did
-$last_don = $con->query("SELECT donation_date FROM donation_request WHERE user_id = " . intval($_SESSION['user']['user_id']) . " ORDER BY donation_date DESC LIMIT 1");
-$last_don = $last_don->fetch(PDO::FETCH_ASSOC);
+$last_don = $con->query("SELECT donation_date FROM donation_request WHERE user_id = " . $_SESSION["user"]["user_id"] . " AND (status = 'done' OR status = 'pending')");
+$last_don = $last_don->fetchAll(PDO::FETCH_ASSOC);
 if (isset($_SESSION["event_id"])) {
     // yahya remamber to fix the issue that if the user want to donait for a new event without anyone signing in it an error will happend that the table will be empty so you can loop using for each 
     $event_date_and_unit = $con->query("SELECT news_events.*,center_name FROM news_events JOIN donation_centers on news_events.center_id = donation_centers.center_id WHERE news_event_id = " . $_SESSION["event_id"]);
@@ -41,12 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["data"] == "ok") {
         $date = new DateTime($_POST["date"]);
         $formated_date = $date->format("Y-m-d");
-        if(!empty($last_don) && isset($last_don["donation_date"])){    
-            $last_donation = new DateTime($last_don["donation_date"]);
-            $diffrent = $date->diff($last_donation);
-            $days_appart = $diffrent->days;
-        }
-        
+
+
         if (isset($_SESSION["event_id"])) {
             $shesk_if_already_there = $con->query("SELECT * FROM donation_request where news_event_id = " . $_SESSION["event_id"] . " AND user_id =" . $_SESSION["user"]["user_id"] . " AND status = 'pending'");
             $shesk_if_already_there = $shesk_if_already_there->fetch(PDO::FETCH_ASSOC);
@@ -62,17 +58,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         } else if (isset($_SESSION["center_id"])) {
-            if(isset($days_appart)){
-                if ($days_appart < 15) {
-                    $wait_time = 15 - $days_appart;
-                    echo json_encode(["status" => "error", "message" => "You are only $days_appart days apart from your last donation. Please wait $wait_time more day(s) to donate again"]);
-                    exit();
+            if (!empty($last_don)) {
+                foreach ($last_don as $donation) {
+                    $old_date = new DateTime($donation['donation_date']);
+                    $diff = abs($date->diff($old_date)->days);
+                    if ($diff < 15) {
+
+                        echo json_encode(["status" => "error", "message" => "can't donate must wait 15 days between donations"]);
+                        exit();
+                    }
                 }
             }
+
             $blood_supply = $con->query("SELECT blood_supplay.availible_unit,max_units,blood_type_name,blood_types.blood_type_id, center_id FROM blood_supplay JOIN blood_types on blood_supplay.blood_type_id = blood_types.blood_type_id WHERE blood_supplay.center_id = " . $_SESSION['center_id']);
             $blood_supply = $blood_supply->fetchAll(PDO::FETCH_ASSOC);
-             foreach ($blood_supply as $type){
-                if($type["blood_type_id"] == $_SESSION["user"]["blood_type"]){
+            foreach ($blood_supply as $type) {
+                if ($type["blood_type_id"] == $_SESSION["user"]["blood_type"]) {
                     if ($type["availible_unit"] < $type["max_units"]) {
                         $add_request = $con->prepare("INSERT INTO donation_request(status,request_date,donation_date,donation_time_stamp,news_event_id,center_id,user_id) VALUES('pending',NOW(),?,?,NULL,?,?)");
                         $add_request->execute([$formated_date, $_POST["time_stemp"], $_SESSION["center_id"], $_SESSION["user"]["user_id"]]);
@@ -81,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo json_encode(["status" => "error", "message" => "Your blood type is at max units in the donation center"]);
                         exit();
                     }
-                }    
+                }
             }
             exit();
         }
@@ -110,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
     unset($_SESSION["event_id"]);
-        unset($_SESSION["center_id"]);
+    unset($_SESSION["center_id"]);
 }
 ?>
 
@@ -131,6 +132,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="after_div">
             <div class="intro">
                 <?php
+                echo "<pre>";
+                print_r($last_don);
+                echo "</pre>";
                 if (isset($_SESSION["event_id"])) {
                     echo "<h1>Emergency Donation Request</h1>";
                     echo "<p>You're responding to an urgent blood need. Thank you for helping save a life.</p>";

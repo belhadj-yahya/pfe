@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (!empty($user)) {
                     if (strlen($password) >= 8) {
                         if (password_verify($password, $user["user_password"])) {
-                            $_SESSION["user"] = ["user_id" => $user["user_id"], "blood_type" => $user["blood_type_name"]];
+                            $_SESSION["user"] = ["user_id" => $user["user_id"], "blood_type" => $user["blood_type_id"],"blood_type_name" => $user["blood_type_name"]];
                             echo json_encode(["p_class" => "go", "message" => "incurect password", "on" => [".email"], "value" => ""]);
                             exit();
                         } else {

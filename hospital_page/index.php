@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $status = trim($_POST["level"] ?? "");
     $description = trim($_POST["message"] ?? "");
     $center_id = intval($_POST["center"] ?? 0);
+    $in_need_name = trim($_POST["in_need_name"] ?? "");
 
     // Validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE)) {
@@ -38,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
     $units = intval($units);
-    $stmt = $con->prepare("INSERT INTO blood_request (needed_units,request_status,hospital_name,location,status,created_at,blood_type_id,center_id,contact,needed_at,Description) VALUES (:units,'pending',:hospital,:location,:status,NOW(),:blood_type,:center_id,:contact,:needed_at,:description)");
+    $stmt = $con->prepare("INSERT INTO blood_request (needed_units,request_status,hospital_name,location,status,created_at,blood_type_id,center_id,contact,needed_at,Description,person_in_need_name) VALUES (:units,'pending',:hospital,:location,:status,NOW(),:blood_type,:center_id,:contact,:needed_at,:description,:person_in_need_name)");
     $stmt->execute([
         ':units' => $units,
         ':hospital' => $hospital_name,
@@ -48,10 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ':center_id' => $center_id,
         ':contact' => "$person_name | $phone | $email",
         ':needed_at' => $date_needed,
-        ':description' => $description
+        ':description' => $description,
+        ':person_in_need_name' => $in_need_name
     ]);
 
-    echo json_encode(["status" => "error", "message" => "Blood requerst was send successfully"]);
+    echo json_encode(["status" => "done", "message" => "Blood requerst was send successfully"]);
 
     exit();
 }
@@ -123,6 +125,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div>
+                            <label for="blood_type">Person in need</label>
+                            <input type="text" name="" placeholder="name of the person in need" id="name_of_person">
+                            
                         </div>
                         <div>
                             <label for="units">Units needed</label>

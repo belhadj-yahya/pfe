@@ -76,6 +76,8 @@ $(document).ready(function(){
                 contentType: false, 
                 processData: false,
                 success: function (response) {
+                    console.log("this need to show the fucking respone")
+                    console.log(response)
                     let something = JSON.parse(response)
                     if(something.class != "done"){
                         $(something.class).text(something.message).fadeIn()

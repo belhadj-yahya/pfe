@@ -16,7 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $add_user = $con->prepare("INSERT INTO users(user_full_name,user_email,user_password,location,phone,blood_type_id) VALUES(?,?,?,?,?,?)");
             if ($add_user->execute([$_POST["f_name"] . " " . $_POST["l_name"], $email, $password, $_POST["city"] . " " . $_POST["street"], $_POST["phone_number"], $_POST["blood_type_id"]])) {
                 $id = $con->lastInsertId();
-                $_SESSION["user"] = ["blood_type" => $_POST["blood_type_id"], "user_id" => $id];
+                $get_user = $con->query("SELECT users.*,blood_type_name FROM users JOIN blood_types on users.blood_type_id = blood_types.blood_type_id where user_id = $id");
+                $get_user = $get_user->fetch(PDO::FETCH_ASSOC);
+                $_SESSION["user"] = ["blood_type" => $_POST["blood_type_id"], "user_id" => $id, "blood_type_name" => $get_user["blood_type_name"]];
                 echo json_encode(["class" => "done", "message" => "welcome to DonaitLife"]);
                 exit();
             } else {

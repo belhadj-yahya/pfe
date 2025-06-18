@@ -14,7 +14,9 @@ $(document).ready(function () {
             $("#date").val().trim(),
             $("#level").val().trim(),
             $("#message").val().trim(),
-            $("#center").val()
+            $("#center").val(),
+            $("#name_of_person").val().trim()
+
         ];
 
         let allFilled = values.every(val => val !== "");
@@ -39,22 +41,26 @@ $(document).ready(function () {
             level: values[7],
             message: values[8],
             center: values[9],
+            in_need_name: values[10]
         };
         $.ajax({
-            url:"",
+            url:"/pfe/hospital_page/index.php",
             method: "POST",
             data: postData,
             success: function (response) {
-                console.log(response)
+                console.log("we enter success");
                 let data = JSON.parse(response);
+                console.log(data)
                 if(data.status == "done"){
-                    $(".error").text(data.message).css({
-                        color:"red",
-                        display:"block"
-                    })
-                }else{
+                    console.log("we are in done")
                     $(".error").text(data.message).css({
                         color:"green",
+                        display:"block"
+                    })
+                }else if(data.status == "error"){
+                    console.log("we are in error")
+                    $(".error").text(data.message).css({
+                        color:"red",
                         display:"block"
                     })
                 }

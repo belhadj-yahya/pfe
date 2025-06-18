@@ -3,6 +3,12 @@ require_once "../db_con/cone.php";
 session_start();
 if (!isset($_SESSION["user"])) {
     header("Location: login.php");
+    exit;
+}
+
+if (!isset($_SESSION["center_id"]) && !isset($_SESSION["event_id"])) {
+    header("Location: select_center.php");
+    exit;
 }
 $center_data_for_both_cases;
 //here we will get the last date of donation that the user did
@@ -10,7 +16,7 @@ $last_don = $con->query("SELECT donation_date FROM donation_request WHERE user_i
 $last_don = $last_don->fetch(PDO::FETCH_ASSOC);
 if (isset($_SESSION["event_id"])) {
     // yahya remamber to fix the issue that if the user want to donait for a new event without anyone signing in it an error will happend that the table will be empty so you can loop using for each 
-    $event_date_and_unit = $con->query("SELECT * FROM news_events WHERE news_event_id = " . $_SESSION["event_id"]);
+    $event_date_and_unit = $con->query("SELECT news_events.*,center_name FROM news_events JOIN donation_centers on news_events.center_id = donation_centers.center_id WHERE news_event_id = " . $_SESSION["event_id"]);
     $event_date_and_unit = $event_date_and_unit->fetch(PDO::FETCH_ASSOC);
     // this is here to sheck the first select and how can the user donait
     $total_request = $con->query("SELECT time_slots.slot AS donation_time_stamp,COALESCE(COUNT(donation_request.request_id), 0) AS total_requests FROM (SELECT 'morning' AS slot UNION ALL SELECT 'afternone' UNION ALL SELECT 'evining') AS time_slots LEFT JOIN donation_request ON time_slots.slot = donation_request.donation_time_stamp" . " AND donation_request.news_event_id = " . $_SESSION["event_id"] . " AND donation_request.status = 'pending' GROUP BY time_slots.slot ORDER BY FIELD(time_slots.slot, 'morning', 'afternone', 'evining')");
@@ -47,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($shesk_if_already_there)) {
                 echo json_encode(["status" => "error", "message" => "you already have donation request for this urgent need"]);
             } else {
-                if (str_contains(strtolower($event_date_and_unit["blood_type_needed"]), strtolower($_SESSION["user"]["blood_type"])) || $event_date_and_unit["blood_type_needed"] == "all" || $_SESSION["user"]["blood_type"] == "i dont know") {
+                if (str_contains(strtolower($event_date_and_unit["blood_type_needed"]), strtolower($_SESSION["user"]["blood_type_name"])) || $event_date_and_unit["blood_type_needed"] == "all" || $_SESSION["user"]["blood_type"] == "i dont know") {
                     $add_request = $con->prepare("INSERT INTO donation_request(status,request_date,donation_date,donation_time_stamp,news_event_id,center_id,user_id) values('pending',NOW(),?,?,?,NULL,?)");
                     $add_request->execute([$formated_date, $_POST["time_stemp"], $_SESSION["event_id"], $_SESSION["user"]["user_id"]]);
                     echo json_encode(["status" => "done", "message" => "your donation request was added"]);
@@ -65,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $blood_supply = $con->query("SELECT blood_supplay.availible_unit,max_units,blood_type_name,blood_types.blood_type_id, center_id FROM blood_supplay JOIN blood_types on blood_supplay.blood_type_id = blood_types.blood_type_id WHERE blood_supplay.center_id = " . $_SESSION['center_id']);
             $blood_supply = $blood_supply->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($blood_supply as $type) {
+             foreach ($blood_supply as $type){
                 if($type["blood_type_id"] == $_SESSION["user"]["blood_type"]){
                     if ($type["availible_unit"] < $type["max_units"]) {
                         $add_request = $con->prepare("INSERT INTO donation_request(status,request_date,donation_date,donation_time_stamp,news_event_id,center_id,user_id) VALUES('pending',NOW(),?,?,NULL,?,?)");
@@ -73,8 +79,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo json_encode(["status" => "done", "message" => "your donation request was added"]);
                     } else {
                         echo json_encode(["status" => "error", "message" => "Your blood type is at max units in the donation center"]);
+                        exit();
                     }
-                }
+                }    
             }
             exit();
         }
@@ -156,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <p><?php echo $event_date_and_unit["max_units_needed"] ?> unit needed</p>
                             </div>
                         </div>
-                        <p style="color:#f5bcbf">center name</p>
+                        <p style="color:#f5bcbf"><?php echo $event_date_and_unit["center_name"] ?></p>
                     </div>
                 </div>
             <?php } ?>

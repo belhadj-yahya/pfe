@@ -96,6 +96,16 @@ main{
     margin-bottom: 20px;
     border-left: 7px solid #ec4899;
 }
+.type {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;       
+    max-height: calc(1.5em * 9); 
+}
 .type_place{
     position: absolute;
     background-color: #ec4899;

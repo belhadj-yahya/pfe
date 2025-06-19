@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Donation requests</p>
             </header>
             <div class="settings">
-                <input type="text" class="event_search" id="" placeholder="seach blood need by title">
+                <input type="text" class="event_search" id="" placeholder="seach by Donor name">
                 <select class="type_of_donation" id="">
                     <option value="normal">Regular Donations</option>
                     <option value="event">Emergency Donations</option>

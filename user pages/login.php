@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
     <script src="/pfe/jquery-3.7.1.js"></script>
-    <script src="/pfe/user scripts/login.js"></script>
+    <script src="/pfe/user scripts/login.js?v=1.0.1"></script>
 </body>
 
 </html>

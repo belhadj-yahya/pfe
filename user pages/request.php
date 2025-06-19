@@ -132,9 +132,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="after_div">
             <div class="intro">
                 <?php
-                echo "<pre>";
-                print_r($last_don);
-                echo "</pre>";
                 if (isset($_SESSION["event_id"])) {
                     echo "<h1>Emergency Donation Request</h1>";
                     echo "<p>You're responding to an urgent blood need. Thank you for helping save a life.</p>";

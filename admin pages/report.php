@@ -33,7 +33,7 @@
                         <textarea name="" id="" cols="30" placeholder="Write your report content here..."></textarea>
                     </div>
                 </div>
-                <div class="settings">
+                <div class="settings10">
                     <button class="down">Donwload</button>
                     <button class="cls">clear</button>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="before_pdf">
                     <div class="pdf_div">
                         <h1>Title</h1>
-                        <p>Content....</p>
+                        <p class="earap">Content....</p>
                     </div>
                 </div>
 

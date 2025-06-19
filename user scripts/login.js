@@ -20,7 +20,7 @@ $(document).ready(function(){
                 }else{
                     $(errors.p_class).text(errors.message);
                     for(let i = 0;i <= errors.on.length;i++){
-                    $(errors.on[i]).val(errors.value)
+                    // $(errors.on[i]).val(errors.value)
                 }}
                 
             }

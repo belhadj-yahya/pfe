@@ -105,7 +105,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="">All types</option>
                         <?php
                         foreach ($blood_types as $type) {
-                            echo "<option value='" . $type["blood_type_name"] . "'>" . $type["blood_type_name"] . "</option>";
+                            if($type["blood_type_name"] != "I don't know"){
+                                echo "<option value='" . $type["blood_type_name"] . "'>" . $type["blood_type_name"] . "</option>";
+                            }
                         }
                         ?>
                     </select>
@@ -122,23 +124,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <th>Action</th>
                         </thead>
                         <tbody class="events_tbody">
-                            <?php
+                        <?php
                             foreach ($events as $event) {
+                                // Escape all values
+                                $title = htmlspecialchars($event['title']);
+                                $description = htmlspecialchars($event['description']);
+                                $date_of_relais = htmlspecialchars($event['data_of_relais']);
+                                $news_events_date = htmlspecialchars($event['news_events_date']);
+                                $max_units_needed = htmlspecialchars($event['max_units_needed']);
+                                $blood_type_needed = htmlspecialchars($event['blood_type_needed']);
+                                $news_event_id = htmlspecialchars($event['news_event_id']);
+
                                 echo <<<HTML
-                                <tr class="event_tr" data-event_title="{$event['title']}" data-event_blood_type="{$event['blood_type_needed']}">
-                                    <td>{$event["title"]}</td>
-                                    <td style="width:200px">{$event["description"]}</td>
-                                    <td>{$event["data_of_relais"]}</td>
-                                    <td>{$event["news_events_date"]}</td>
-                                    <td>{$event["max_units_needed"]}</td>
-                                    <td>{$event["blood_type_needed"]}</td>
+                                <tr class="event_tr" data-event_title="$title" data-event_blood_type="$blood_type_needed">
+                                    <td>$title</td>
+                                    <td style="width:200px">$description</td>
+                                    <td>$date_of_relais</td>
+                                    <td>$news_events_date</td>
+                                    <td>$max_units_needed</td>
+                                    <td>$blood_type_needed</td>
                                     <td>
-                                        <button class="delete" data-event_id="{$event['news_event_id']}" data-table=".events_tbody">Delete</button>
+                                        <button class="delete" data-event_id="$news_event_id" data-table=".events_tbody">Delete</button>
                                     </td>
                                 </tr>
-                            HTML;
+                                HTML;
                             }
-
                             ?>
                         </tbody>
                     </table>
@@ -146,25 +156,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <dialog id="edite">
                     <div class="new_main_div">
                         <div class="settings">
-                            <h2>Edite user</h2>
+                            <h2>Add event</h2>
                             <p class="close">&#10006;</p>
                         </div>
                         <form action="" method="post">
                             <div>
                                 <label for="new_full_name">Title</label>
-                                <input type="text" name="" class="event_title">
+                                <input type="text" name="" class="event_title" placeholder="title of the emergency">
                             </div>
                             <div>
                                 <label for="new_phone">Content</label>
-                                <textarea name="" class="event_content" id=""></textarea>
+                                <textarea name="" class="event_content" id="" placeholder="context of the emergency"></textarea>
                             </div>
                             <div>
                                 <label for="">Blood types in need</label>
-                                <input type="text" class="blood_type_in_need">
+                                <input type="text" class="blood_type_in_need" placeholder="enter all blood type in need or type all for all types">
                             </div>
                             <div>
                                 <label for="">Units needed</label>
-                                <input type="number" min="1" class="units">
+                                <input type="number" min="1" class="units" placeholder="units of blood in need">
                             </div>
                             <div>
                                 <label for="new_em">Date of need</label>
@@ -196,8 +206,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             foreach ($news as $new) {
                                 echo <<<HTML
                                 <tr data-news_title="{$new['title']}" class="news_tr">
-                                    <td style="width:200px">{$new["title"]}</td>
-                                    <td style="width:300px">{$new["description"]}</td>
+                                    <td class="test">{$new["title"]}</td>
+                                    <td class='small'>{$new["description"]}</td>
                                     <td style="padding-inline: 50px;">{$new["data_of_relais"]}</td>
                                     <td>
                                         <button class="delete" data-event_id="{$new['news_event_id']}" data-table=".news_tbody">Delete</button>
@@ -236,7 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
     </main>
-    <script src="../admen scripts/news.js"></script>
+    <script src="../admen scripts/news.js?v=1.0.1"></script>
 </body>
 
 </html>

@@ -14,8 +14,8 @@ $(document).ready(function(){
         let type = $("select[name='type']").val().toLowerCase();
 
         $("tbody tr").each(function () {
-            let userName = $(this).attr("date-name").toLowerCase();
-            let userType = $(this).attr("date-type").toLowerCase();
+            let userName = $(this).data("name").toLowerCase();
+            let userType = $(this).data("type").toLowerCase();
 
             let matchesName = userName.includes(name);
             let matchesType = type === "" || userType === type;
@@ -53,6 +53,10 @@ $(document).ready(function(){
 
         if (password.length < 8) {
             errorElement.text("Password must be at least 8 characters long.").show();
+            return;
+        }
+        if(phone.length != 10){
+            errorElement.text("phone number must be 10 characters long.").show();
             return;
         }
         console.log("before we enter ajax")
@@ -106,6 +110,7 @@ $("#confirmEdit").on("click", function () {
     const phone = $("#new_phone").val().trim();
     const city = $("#new_loc").val().trim();
     const blood_type = $("#new_type").val().trim();
+    let errorElement = $(".error2");
     console.log(name)
     console.log(email)
     console.log(phone)
@@ -116,6 +121,11 @@ $("#confirmEdit").on("click", function () {
     // Check for empty values
     if (!name || !email || !phone || !city || !blood_type) {
         alert("Please fill in all fields.");
+        return;
+    }
+
+    if(phone.length != 10){
+        errorElement.text("phone number must be 10 characters long.").show();
         return;
     }
     $.ajax({

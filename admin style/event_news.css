@@ -7,6 +7,9 @@
 body{
     display: flex;
 }
+.small{
+    width: 200px;
+}
 main{
     /* position: absolute; */
     width: 100%;

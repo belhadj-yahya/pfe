@@ -53,6 +53,7 @@ header img{
     justify-content: center;
     align-items: center;
 }
+
 .place_for_inputs{
  
     width: 100%;
@@ -127,4 +128,7 @@ header img{
     font-weight:600;
     width: 700px;
 
+}
+p.earap{
+    width: 100%;
 }

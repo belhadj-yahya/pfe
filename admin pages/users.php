@@ -168,15 +168,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                     <tbody>
                         <?php
                         foreach ($users as $user) {
-                            // Sanitize all dynamic values
-                            $user_full_name = htmlspecialchars($user['user_full_name'], ENT_QUOTES, 'UTF-8');
-                            $blood_type_name = htmlspecialchars($user['blood_type_name'], ENT_QUOTES, 'UTF-8');
-                            $user_email = htmlspecialchars($user['user_email'], ENT_QUOTES, 'UTF-8');
-                            $phone = htmlspecialchars($user['phone'], ENT_QUOTES, 'UTF-8');
-                            $blood_type_id = htmlspecialchars($user['blood_type_id'], ENT_QUOTES, 'UTF-8');
-                            $total_requests = htmlspecialchars($user['total_requests'], ENT_QUOTES, 'UTF-8');
-                            $location = htmlspecialchars($user['location'], ENT_QUOTES, 'UTF-8');
-                            $user_id = htmlspecialchars($user['user_id'], ENT_QUOTES, 'UTF-8');
+                            $user_full_name = htmlspecialchars($user['user_full_name']);
+                            $blood_type_name = htmlspecialchars($user['blood_type_name']);
+                            $user_email = htmlspecialchars($user['user_email']);
+                            $phone = htmlspecialchars($user['phone']);
+                            $blood_type_id = htmlspecialchars($user['blood_type_id']);
+                            $total_requests = htmlspecialchars($user['total_requests']);
+                            $location = htmlspecialchars($user['location']);
+                            $user_id = htmlspecialchars($user['user_id']);
                             echo <<<HTML
                                 <tr class="user_name" data-name="$user_full_name" data-type="$blood_type_name">
                                     <td class="name">$user_full_name</td>
@@ -290,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         </div>
     </main>
 
-    <script src="../admen scripts/user.js"></script>
+    <script src="../admen scripts/user.js?v=1.0.2"></script>
 </body>
 
 </html>

@@ -120,6 +120,10 @@ $(document).ready(function(){
         
 
         if(event_blood_type_in_need == "" || event_title == "" || event_des == "" || event_date_of_need == ""){
+            console.log(event_blood_type_in_need);
+            console.log(event_title);
+            console.log(event_des);
+            console.log(event_date_of_need)
             $(".error2").text("All fileds are required").css("color","red")
             return;
         }

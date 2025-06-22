@@ -107,23 +107,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
             <div class="before_chart">
-                <div class="select_div">
-                    <select name="date" id="">
-                        <?php
-                        foreach ($years as $year) {
-                            echo "<option value='" . $year["year"] . "'>" . $year["year"] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="charts">
-                    <!-- Pie Chart -->
+                <div class="change">
                     <canvas id="bloodTypeChart"></canvas>
-
-                    <!-- Bar Chart -->
-                    <canvas id="monthlyDonationsChart"></canvas>
-
                 </div>
+                <div>
+                    <div class="select_div">
+                        <select name="date" id="">
+                            <?php
+                            foreach ($years as $year) {
+                                echo "<option value='" . $year["year"] . "'>" . $year["year"] . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <canvas id="monthlyDonationsChart"></canvas>
+                </div>
+
             </div>
         </div>
     </main>

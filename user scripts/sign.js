@@ -9,14 +9,14 @@ $(document).ready(function(){
           e.preventDefault()
           $(".error").hide()
         // all elements
-        let f_name = $(".first_name").val().trim();
-        let l_name = $(".last_name").val().trim();
+        let f_name = $(".first_name").val().trim().replace(/\s+/g, "_");
+        let l_name = $(".last_name").val().trim().replace(/\s+/g, "_");
         let email = $(".email").val();
         let password = $(".password").val();
         let confim_password = $(".confirm_password").val();
         let phone_number = $(".phone_number").val().trim();
-        let city = $(".city").val().trim();
-        let street = $(".street").val().trim();
+        let city = $(".city").val().trim().replace(/\s+/g, "_");
+        let street = $(".street").val().trim().replace(/\s+/g, "_");
         let select = $(".blood_type").val();
         let array_of_input = [f_name,l_name,email,phone_number,city,street,select];
         array_of_input.forEach((element,index) => {
@@ -40,7 +40,9 @@ $(document).ready(function(){
             confirm_error.fadeOut();
         }
         console.log("we are here baby")
-        if(phone_number.length < 10 || typeof Number(phone_number) != "number"){
+        console.log(phone_number.length)
+        console.log(phone_number.length >= 13)
+        if(phone_number.length <= 10 || phone_number.length >= 13 || typeof Number(phone_number) != "number"){
             console.log("we are in if phone is not valid")
             console.log(phone_number.length)
             console.log(typeof Number(phone_number))
@@ -60,21 +62,10 @@ $(document).ready(function(){
         }
         
         if(sheck){
-            let form_data = new FormData();
-            form_data.append('f_name', f_name);
-            form_data.append('l_name', l_name);
-            form_data.append('email', email);
-            form_data.append('password', password);
-            form_data.append('phone_number', phone_number);
-            form_data.append('city', city);
-            form_data.append('street', street);
-            form_data.append('blood_type_id', select);
             $.ajax({
                 type: "POST",
                 url: "/pfe/user pages/sign.php",
-                data:form_data,
-                contentType: false, 
-                processData: false,
+                data:{f_name:f_name, l_name:l_name, email:email, password:password, phone_number:phone_number, city:city, street:street, blood_type_id:select},
                 success: function (response) {
                     console.log("this need to show the fucking respone")
                     console.log(response)

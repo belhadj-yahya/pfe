@@ -12,13 +12,15 @@ $users = $users->fetchAll(PDO::FETCH_ASSOC);
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
     if ($_POST["action"] === "add_user") {
         $name = trim($_POST["full_name"] ?? '');
+        $last_name = trim($_POST["last_name"] ?? '');
         $type = trim($_POST["type"] ?? '');
         $phone = trim($_POST["phone"] ?? '');
         $email = trim($_POST["email"] ?? '');
         $password = trim($_POST["password"] ?? '');
         $location = trim($_POST["location"] ?? '');
+        $street = trim($_POST["street"] ?? '');
 
-        if (!$name || !$type || !$phone || !$email || !$password || !$location) {
+        if (!$name || !$last_name || !$type || !$phone || !$email || !$password || !$location || !$street) {
             echo json_encode(["status" => "error", "message" => "Missing fields"]);
             exit;
         }
@@ -40,30 +42,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
             exit;
         }
 
-        // Get blood_type_id from name
-        $stmt = $con->prepare("SELECT blood_type_id FROM blood_types WHERE blood_type_name = ?");
-        $stmt->execute([$type]);
-        $blood = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$blood) {
-            echo json_encode(["status" => "error", "message" => "Invalid blood type"]);
-            exit;
-        }
-        $blood_id = $blood["blood_type_id"];
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $stmt = $con->prepare("INSERT INTO users (user_full_name, user_email, phone, user_password, blood_type_id, location) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$name, $email, $phone, $hashed_password, $blood_id, $location]);
+        $stmt->execute([$name . " " . $last_name, $email, $phone, $hashed_password, $type, $location . " " . $street]);
         echo json_encode(["status" => "done", "message" => "User added successfully"]);
         exit;
     } elseif ($_POST["action"] === "update_user") {
         $user_id = $_POST["user_id"] ?? null;
         $name = trim($_POST["name"] ?? '');
+        $last_name = trim($_POST["last_name"] ?? '');
         $email = trim($_POST["email"] ?? '');
         $phone = trim($_POST["phone"] ?? '');
         $location = trim($_POST["city"] ?? '');
+        $street = trim($_POST["street"] ?? '');
         $blood_type_id = $_POST["blood_type"] ?? null;
 
-        if (!$user_id || !$name || !$email || !$phone  || !$location || !$blood_type_id) {
+        if (!$user_id || !$name || !$last_name || !$email || !$phone  || !$location || !$street || !$blood_type_id) {
             // echo  "user_id: " . $user_id . "user_name:  " . $name . "user_email:  " . $email . "user_phone:  " . $phone . "user_location:  " . $location . "user_blood_type:  " . $blood_type_id;
             echo json_encode(["status" => "error", "message" => "Missing required fields"]);
             exit;
@@ -93,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 
         // Update the user data
         $stmt = $con->prepare("UPDATE users SET user_full_name = ?, user_email = ?, phone = ?, location = ?, blood_type_id = ? WHERE user_id = ?");
-        $updated = $stmt->execute([$name, $email, $phone, $location, $blood_type_id, $user_id]);
+        $updated = $stmt->execute([$name . " " . $last_name, $email, $phone, $location . " " . $street, $blood_type_id, $user_id]);
 
         if ($updated) {
             echo json_encode(["status" => "done", "message" => "User updated successfully"]);
@@ -148,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                     <option value="">All types</option>
                     <?php
                     foreach ($blood_types as $type) {
-                        echo "<option value='" . $type["blood_type_name"] . "'>" . $type["blood_type_name"] . "</option>";
+                        echo "<option value='" . $type["blood_type_id"] . "'>" . $type["blood_type_name"] . "</option>";
                     }
                     ?>
                 </select>
@@ -203,8 +198,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                         </div>
                         <form action="" method="post">
                             <div>
-                                <label for="full_name">Full Name</label>
+                                <label for="full_name">First Name</label>
                                 <input type="text" name="" id="full_name">
+                            </div>
+                            <div>
+                                <label for="last_name">last Name</label>
+                                <input type="text" name="" id="last_name">
                             </div>
                             <div>
                                 <label for="">Blood type</label>
@@ -212,14 +211,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                                     <option value="">All types</option>
                                     <?php
                                     foreach ($blood_types as $type) {
-                                        echo "<option value='" . $type["blood_type_name"] . "'>" . $type["blood_type_name"] . "</option>";
+                                        echo "<option value='" . $type["blood_type_id"] . "'>" . $type["blood_type_name"] . "</option>";
                                     }
                                     ?>
                                 </select>
                             </div>
                             <div>
                                 <label for="phone">Phone number</label>
-                                <input type="number" name="" id="phone">
+                                <input type="tel" name="" id="phone">
                             </div>
                             <div>
                                 <label for="em">Email</label>
@@ -234,8 +233,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                                 <input type="password" name="" id="con_pass">
                             </div>
                             <div>
-                                <label for="loc">Location</label>
+                                <label for="loc">City</label>
                                 <input type="text" name="" id="loc">
+                            </div>
+                            <div>
+                                <label for="street">Street</label>
+                                <input type="text" name="" id="street">
                             </div>
                         </form>
                         <div class="last_div">
@@ -252,8 +255,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                         </div>
                         <form action="" method="post">
                             <div>
-                                <label for="new_full_name">New Full Name</label>
+                                <label for="new_full_name">New first name</label>
                                 <input type="text" name="" id="new_full_name">
+                            </div>
+                            <div>
+                                <label for="new_full_name">New last name</label>
+                                <input type="text" name="" id="new_full_name2">
                             </div>
                             <div>
                                 <label for="">New Blood type</label>
@@ -268,15 +275,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
                             </div>
                             <div>
                                 <label for="new_phone">New Phone number</label>
-                                <input type="number" name="" id="new_phone">
+                                <input type="tel" name="" id="new_phone">
                             </div>
                             <div>
                                 <label for="new_em">New Email</label>
                                 <input type="email" name="" id="new_em">
                             </div>
                             <div>
-                                <label for="new_loc">Location</label>
+                                <label for="new_loc">New city</label>
                                 <input type="text" name="" id="new_loc">
+                            </div>
+                            <div>
+                                <label for="new_loc">New street</label>
+                                <input type="text" name="" id="new_loc2">
                             </div>
                         </form>
                         <div class="last_div">
@@ -289,7 +300,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         </div>
     </main>
 
-    <script src="../admen scripts/user.js?v=1.0.2"></script>
+    <script src="../admen scripts/user.js?v=1.0.8"></script>
 </body>
 
 </html>

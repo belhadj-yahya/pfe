@@ -31,17 +31,28 @@ $(document).ready(function(){
     $("select[name='type']").on("change", filterUsers);
 
       $(".last_div button").on("click", function () {
-        let fullName = $("#full_name").val().trim();
+        let fullName = $("#full_name").val().trim().replace(/\s+/g, "_");
+        let last_Name = $("#last_name").val().trim().replace(/\s+/g, "_");
         let bloodType = $("select[name='add_type']").val();
         let phone = $("#phone").val().trim();
         let email = $("#em").val().trim();
         let password = $("#pass").val().trim();
         let confirmPassword = $("#con_pass").val().trim();
-        let location = $("#loc").val().trim();
+        let location = $("#loc").val().trim().replace(/\s+/g, "_");
+        let street = $("#street").val().trim().replace(/\s+/g, "_");
         let errorElement = $(".error1");
 
         errorElement.text("").hide();
-        if (!fullName || !bloodType || !phone || !email || !password || !confirmPassword || !location) {
+        console.log(fullName)
+        console.log(last_Name)
+        console.log(bloodType)
+        console.log(phone)
+        console.log(email)
+        console.log(password)
+        console.log(confirmPassword)
+        console.log(location)
+        console.log(street)
+        if (!fullName || !last_Name || !bloodType || !phone || !email || !password || !confirmPassword || !location || !street) {
             errorElement.text("Please fill in all fields.").show();
             return;
         }
@@ -66,11 +77,13 @@ $(document).ready(function(){
             data: {
                 action: "add_user",
                 full_name: fullName,
+                last_name:last_Name,
                 type: bloodType,
                 phone: phone,
                 email: email,
                 password: password,
-                location: location
+                location: location,
+                street:street
             },
             success: function (response) {
                 console.log("at the start of success function in ajax")
@@ -94,22 +107,29 @@ $(document).ready(function(){
     const row = $(this).closest("tr");
 
     currentUserId = row.find('input[name="user_id"]').val();
-
-    $("#new_full_name").val(row.find(".name").text());
+    let temp_name = row.find(".name").text().split(" ")
+    console.log(temp_name)
+    let temp_loc = row.find(".city").text().split(" ")
+    console.log(temp_loc)
+    $("#new_full_name").val(temp_name[0]);
+    $("#new_full_name2").val(temp_name[1]);
     $("#new_em").val(row.find(".email").text());
     $("#new_phone").val(row.find(".phone").text());
-    $("#new_loc").val(row.find(".city").text());
+    $("#new_loc").val(temp_loc[0]);
+    $("#new_loc2").val(temp_loc[1]);
     let bloodId = row.find(".blood_type").data("blood_type");
     $("#new_type").val(bloodId);
 
     $("#edite")[0].showModal();
 });
 $("#confirmEdit").on("click", function () {
-    const name = $("#new_full_name").val().trim();
-    const email = $("#new_em").val().trim();
-    const phone = $("#new_phone").val().trim();
-    const city = $("#new_loc").val().trim();
-    const blood_type = $("#new_type").val().trim();
+    let name = $("#new_full_name").val().trim().replace(/\s+/g, "_");
+    let last_name = $("#new_full_name2").val().trim().replace(/\s+/g, "_");
+    let email = $("#new_em").val().trim();
+    let phone = $("#new_phone").val().trim();
+    let city = $("#new_loc").val().trim().replace(/\s+/g, "_");
+    let street = $("#new_loc2").val().trim().replace(/\s+/g, "_");
+    let blood_type = $("#new_type").val().trim();
     let errorElement = $(".error2");
     console.log(name)
     console.log(email)
@@ -119,7 +139,7 @@ $("#confirmEdit").on("click", function () {
     console.log(currentUserId)
 
     // Check for empty values
-    if (!name || !email || !phone || !city || !blood_type) {
+    if (!name || !email || !phone || !city || !blood_type || !last_name || !street) {
         alert("Please fill in all fields.");
         return;
     }
@@ -135,9 +155,11 @@ $("#confirmEdit").on("click", function () {
             action: "update_user",
             user_id: currentUserId,
             name:name,
+            last_name:last_name,
             email:email,
             phone:phone,
             city:city,
+            street:street,
             blood_type:blood_type
         },
         success: function (response) {

@@ -5,7 +5,7 @@
     <img src="/pfe/user images/logo.png" class="main_logo" alt="">
     <nav class="header_nav">
         <a href="/pfe/index.php">Home</a>
-        <a href="/pfe/user pages/blood_need_news.php">Events</a>
+        <a href="/pfe/user pages/blood_need_news.php">emergencies and news</a>
         <a href="/pfe/user pages/select_center.php">donate request</a>
     </nav>
     <?php
@@ -20,7 +20,7 @@
 <nav class="side_bar">
     <button class="close_button">&#10006;</button>
     <a href="/pfe/index.php">Home</a>
-    <a href="/pfe/user pages/blood_need_news.php">Events</a>
+    <a href="/pfe/user pages/blood_need_news.php">emergencies and news</a>
     <a href="/pfe/user pages/request.php">donate request</a>
     <?php
     if (isset($_SESSION["user"])) {

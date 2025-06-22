@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = $_POST["phone_number"] ?? "";
     if (filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE)) {
         $check_user = $con->prepare("SELECT user_id FROM users WHERE user_email = ? OR phone = ?");
-        $check_user->execute([$email,$phone]);
+        $check_user->execute([$email, $phone]);
         $check_user = $check_user->fetch(PDO::FETCH_ASSOC);
         if (empty($check_user)) {
             $card_path = $relativePath ?? null;
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
-        echo json_encode(["class" => ".email_error", "message" => "invalid email"]);
+        echo json_encode(["class" => ".email_error", "message" => "invalid email", "email" => $email]);
         exit();
     }
 }
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="filed">
                         <p class="id"><img src="/pfe/user images/phone-solid(1).svg" alt=""> Phone Number</p>
-                        <input type="number" name="phone_number" class="phone_number" id="" placeholder="Enter Your Phone Number">
+                        <input type="tel" name="phone_number" class="phone_number" id="" placeholder="Enter Your Phone Number">
                         <p class="error phone_error">phone is required</p>
                     </div>
                 </div>
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
     <script src="/pfe/jquery-3.7.1.js"></script>
-    <script src="/pfe/user scripts/sign.js"></script>
+    <script src="/pfe/user scripts/sign.js?v=0.1.7"></script>
 </body>
 
 </html>

@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    let morning_end = "12:00";
-    let after_none_end = "15:00";
-    let evning_end = "19:00";
     function getCurrentTime() {
     let now = new Date();
     let hours = String(now.getHours()).padStart(2, '0');
@@ -59,20 +56,6 @@ $(document).ready(function () {
                     let select_value = $(".time_stamp").val();
                     let message;
                     let current_time = getCurrentTime();
-                    console.log("date has change")
-                    const today = new Date().toISOString().split('T')[0];
-                    if($("#datepicker").val() == today){
-                        if(select_value == "morning" && current_time > morning_end){ 
-                            sheck = false;
-                            message = "morning time has ended";
-                        }else if(select_value == "afternone" && current_time > after_none_end){
-                            sheck = false;
-                            message = "after none time has ended";
-                        }else if(select_value == "evining" && current_time > evning_end){
-                            sheck = false;
-                            message = "reservations today has ended";
-                        }
-                    }
                     if(select_value == ""){
                             sheck = false;
                             message = "you have to select a time stamp";

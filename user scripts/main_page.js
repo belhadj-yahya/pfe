@@ -48,9 +48,9 @@ $(document).ready(function () {
                 console.log("news_index in go back is: " + news_index)
                 console.log("Clicked NEWS back", news_index);
                 if (news_index > 0) {
+                    news_index--;
                     update_news(news_index);
                     console.log("we are in if news_index > 0")
-                    news_index--;
                 }else{
                     update_news(news_index);
                 }
@@ -73,8 +73,8 @@ $(document).ready(function () {
             $(".icon2.first_pre_button").on("click", function () {
                 console.log("event_index in go back is: " + events_index)
                 if (events_index > 0) {
-                update_event(events_index);
                     events_index--;
+                    update_event(events_index);
                     console.log("Event index after prev:", events_index);
                 }else{
                     update_event(events_index);

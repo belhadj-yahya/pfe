@@ -43,15 +43,6 @@ $(document).ready(function(){
         let errorElement = $(".error1");
 
         errorElement.text("").hide();
-        console.log(fullName)
-        console.log(last_Name)
-        console.log(bloodType)
-        console.log(phone)
-        console.log(email)
-        console.log(password)
-        console.log(confirmPassword)
-        console.log(location)
-        console.log(street)
         if (!fullName || !last_Name || !bloodType || !phone || !email || !password || !confirmPassword || !location || !street) {
             errorElement.text("Please fill in all fields.").show();
             return;
@@ -93,7 +84,10 @@ $(document).ready(function(){
                 if (data.status == "done") {
                     console.log("in done")
                     $(".error1").text(data.message).css("color","lightgreen").show();
-                    window.location.reload()
+                    $("tbody").html(data.data)
+                    setTimeout(() => {
+                        $("#add")[0].close();
+                    }, 1000);
                 } else if(data.status == "error") {
                     console.log("in error")
                     $(".error1").text(data.message).css("color","red").show();
@@ -102,7 +96,7 @@ $(document).ready(function(){
         });
     });
 
-    $(".adite").on("click", function () {
+    $("tbody").on("click",".adite", function () {
         console.log("we click edite")
     const row = $(this).closest("tr");
 
@@ -169,7 +163,11 @@ $("#confirmEdit").on("click", function () {
                 $(".error2").text(data.message).css("color","red");
             }else if(data.status == "done"){
                 $(".error2").text(data.message).css("color","lightgreen");
-                window.location.reload()
+                $('tbody').html(data.data);
+                setTimeout(() => {
+                    $("#edite")[0].close();
+                }, 1000);
+                
             }
         }
     });

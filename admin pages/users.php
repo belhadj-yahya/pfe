@@ -1,7 +1,7 @@
 <?php
 require_once "../db_con/cone.php";
 session_start();
-
+$data = "";
 $blood_types = $con->query("SELECT * from blood_types");
 $blood_types = $blood_types->fetchAll(PDO::FETCH_ASSOC);
 
@@ -46,7 +46,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
 
         $stmt = $con->prepare("INSERT INTO users (user_full_name, user_email, phone, user_password, blood_type_id, location) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$name . " " . $last_name, $email, $phone, $hashed_password, $type, $location . " " . $street]);
-        echo json_encode(["status" => "done", "message" => "User added successfully"]);
+        $users = $con->query("SELECT users.user_id,users.user_full_name,users.user_email,users.phone,users.location,blood_type_name,users.blood_type_id,COUNT(request_id) AS total_requests FROM users LEFT JOIN blood_types ON users.blood_type_id = blood_types.blood_type_id LEFT JOIN donation_request ON users.user_id = donation_request.user_id GROUP BY users.user_id, users.user_full_name,users.user_email,blood_type_name,users.phone,users.location,users.blood_type_id");
+        $users = $users->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($users as $user) {
+            $user_full_name = htmlspecialchars($user['user_full_name']);
+            $blood_type_name = htmlspecialchars($user['blood_type_name']);
+            $user_email = htmlspecialchars($user['user_email']);
+            $phone = htmlspecialchars($user['phone']);
+            $blood_type_id = htmlspecialchars($user['blood_type_id']);
+            $total_requests = htmlspecialchars($user['total_requests']);
+            $location = htmlspecialchars($user['location']);
+            $user_id = htmlspecialchars($user['user_id']);
+            $data .= <<<HTML
+                                <tr class="user_name" data-name="$user_full_name" data-type="$blood_type_name">
+                                    <td class="name">$user_full_name</td>
+                                    <td class="email">$user_email</td>
+                                    <td class="phone">$phone</td>
+                                    <td class="blood_type" data-blood_type="$blood_type_id">$blood_type_name</td>
+                                    <td>$total_requests</td>
+                                    <td class="city">$location</td>
+                                    <td class="action">
+                                        <button class="adite">Edite</button>
+                                        <input type="hidden" name="user_id" value="$user_id">
+                                        <button class="delete-user-btn">Delete</button>
+                                    </td>
+                                </tr>
+                            HTML;
+        }
+        echo json_encode(["status" => "done", "message" => "User added successfully", "data" => $data]);
         exit;
     } elseif ($_POST["action"] === "update_user") {
         $user_id = $_POST["user_id"] ?? null;
@@ -91,12 +118,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         $updated = $stmt->execute([$name . " " . $last_name, $email, $phone, $location . " " . $street, $blood_type_id, $user_id]);
 
         if ($updated) {
-            echo json_encode(["status" => "done", "message" => "User updated successfully"]);
+            $users = $con->query("SELECT users.user_id,users.user_full_name,users.user_email,users.phone,users.location,blood_type_name,users.blood_type_id,COUNT(request_id) AS total_requests FROM users LEFT JOIN blood_types ON users.blood_type_id = blood_types.blood_type_id LEFT JOIN donation_request ON users.user_id = donation_request.user_id GROUP BY users.user_id, users.user_full_name,users.user_email,blood_type_name,users.phone,users.location,users.blood_type_id");
+            $users = $users->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($users as $user) {
+                $user_full_name = htmlspecialchars($user['user_full_name']);
+                $blood_type_name = htmlspecialchars($user['blood_type_name']);
+                $user_email = htmlspecialchars($user['user_email']);
+                $phone = htmlspecialchars($user['phone']);
+                $blood_type_id = htmlspecialchars($user['blood_type_id']);
+                $total_requests = htmlspecialchars($user['total_requests']);
+                $location = htmlspecialchars($user['location']);
+                $user_id = htmlspecialchars($user['user_id']);
+                $data .= <<<HTML
+                                <tr class="user_name" data-name="$user_full_name" data-type="$blood_type_name">
+                                    <td class="name">$user_full_name</td>
+                                    <td class="email">$user_email</td>
+                                    <td class="phone">$phone</td>
+                                    <td class="blood_type" data-blood_type="$blood_type_id">$blood_type_name</td>
+                                    <td>$total_requests</td>
+                                    <td class="city">$location</td>
+                                    <td class="action">
+                                        <button class="adite">Edite</button>
+                                        <input type="hidden" name="user_id" value="$user_id">
+                                        <button class="delete-user-btn">Delete</button>
+                                    </td>
+                                </tr>
+                            HTML;
+            }
+            echo json_encode(["status" => "done", "message" => "User updated successfully", "data" => $data]);
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to update user"]);
         }
-
-        exit;
     } elseif ($_POST["action"] === "delete_user") {
         $user_id = $_POST["user_id"] ?? null;
 
@@ -112,9 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to delete user"]);
         }
-
-        exit;
     }
+    exit();
 }
 ?>
 

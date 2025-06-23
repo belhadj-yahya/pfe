@@ -74,36 +74,36 @@ $(document).ready(function(){
         filter()
     })
 
-    function response(data,class_to){
+    function response(data,class_to,table_class,dailog_to_close){
         json_data = JSON.parse(data)
         if(json_data.status == "done"){
             console.log("done")
-            $(class_to).text(json_data.message).css("color","green")
+            $(class_to).text(json_data.message).css("color","green");
+            $(table_class).html(json_data.data)
             setTimeout(() => {
-                window.location.reload();                        
-            }, 1000);
+                $(dailog_to_close)[0].close()                        
+            }, 500);
         }else{
             $(class_to).text(json_data.message).css("color","red")
         }
     }
     //code for deleting events
-    $(".delete").each(function(){
-        $(this).on("click",() => {
-            let id = $(this).data("event_id");
-            let class_to_change = $(this).data("table");
-            console.log(id)
-            $.post("",{action:"delete",id:id,table:class_to_change},
-                function(data){
-                    console.log(data)
-                json_data = JSON.parse(data)
-                console.log(json_data)
-                if(json_data.status == "done"){
-                    $(class_to_change).html(json_data.data)
-                }
-                
-            })
+    $("tbody").on("click", ".delete", function () {
+        $("input").each(function(){
+            $(this).val("")
         })
-    })
+    let id = $(this).data("event_id");
+    let class_to_change = $(this).data("table");
+    console.log(id);
+    $.post("", { action: "delete", id: id, table: class_to_change }, function (data) {
+        console.log(data);
+        let json_data = JSON.parse(data);
+        console.log(json_data);
+        if (json_data.status === "done") {
+            $(class_to_change).html(json_data.data);
+        }
+    });
+})
 
 
 
@@ -134,7 +134,10 @@ $(document).ready(function(){
 
         $.post("", {action:"events",event_title:event_title,event_content:event_des,event_blood_type:event_blood_type_in_need,event_date:event_date_of_need,units:blood_units},
             function (data) {
-                response(data,".error2");       
+                response(data,".error2",".events_tbody","#edite");
+                $("input").each(function(){
+                    $(this).val("")
+                })       
             },
         );
     })
@@ -146,7 +149,10 @@ $(document).ready(function(){
         }
         $.post("",{action:"news",news_title:news_title,news_content:news_content},
             function(data){
-                response(data,".error1")
+                response(data,".error1",".news_tbody","#add");
+                $("input").each(function(){
+                    $(this).val("")
+                })
             },
         )
     })

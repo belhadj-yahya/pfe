@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 18, 2025 at 11:01 PM
+-- Generation Time: Jun 23, 2025 at 08:55 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.16
 
@@ -73,7 +73,7 @@ CREATE TABLE `blood_request` (
 
 INSERT INTO `blood_request` (`blood_request_id`, `needed_units`, `request_status`, `hospital_name`, `location`, `status`, `created_at`, `blood_type_id`, `center_id`, `contact`, `needed_at`, `Description`, `person_in_need_name`) VALUES
 (1, 5, 'done', 'mohamed 5', '', 'urgent', '2025-06-15 16:09:21', 10, 7, 'yahya bin yahya | 06060618 |yahya.belhadj.pro@gmail.com', '2025-06-22', 'please helppppppp', 'saida'),
-(4, 3, 'pending', 'mohamed 5', '', 'normal', '2025-06-17 12:23:36', 12, 7, 'abdol | 123456789 | yahya.belhadj.pro@gmail.com', '2026-01-01', 'WE NEED THIS BLOOD', 'nour');
+(4, 3, 'done', 'mohamed 5', '', 'normal', '2025-06-17 12:23:36', 12, 7, 'abdol | 123456789 | yahya.belhadj.pro@gmail.com', '2026-01-01', 'WE NEED THIS BLOOD', 'nour');
 
 -- --------------------------------------------------------
 
@@ -97,7 +97,7 @@ CREATE TABLE `blood_supplay` (
 
 INSERT INTO `blood_supplay` (`blood_supplay_id`, `availible_unit`, `required_units`, `last_update`, `max_units`, `blood_type_id`, `center_id`) VALUES
 (49, 25, 1, '2025-06-13', 25, 10, 7),
-(50, 3, 2, '2025-06-17', 30, 11, 7),
+(50, 5, 2, '2025-06-20', 30, 11, 7),
 (51, 0, 3, '2025-06-11', 35, 12, 7),
 (52, 25, 4, '2025-06-14', 28, 13, 7),
 (53, 0, 5, '2025-06-11', 40, 14, 7),
@@ -226,13 +226,11 @@ INSERT INTO `donation_request` (`request_id`, `status`, `request_date`, `donatio
 (8, 'pending', '2025-06-13', '2025-07-20', 'morning', NULL, 7, 3),
 (18, 'pending', '2025-06-17', '2025-07-12', 'afternone', NULL, 11, 7),
 (19, 'pending', '2025-06-17', '2025-07-27', 'morning', NULL, 11, 7),
-(20, 'pending', '2025-06-17', '2025-06-20', 'evining', 18, NULL, 7),
-(26, 'pending', '2025-06-18', '2025-06-20', 'afternone', 18, NULL, 19),
-(27, 'pending', '2025-06-18', '2025-07-10', 'morning', NULL, 8, 19),
 (28, 'pending', '2025-06-18', '2025-06-20', 'afternone', NULL, 11, 20),
 (30, 'pending', '2025-06-18', '2025-06-25', 'afternone', NULL, 11, 4),
 (31, 'pending', '2025-06-18', '2025-07-16', 'evining', NULL, 8, 4),
-(37, 'pending', '2025-06-18', '2025-08-22', 'morning', NULL, 8, 3);
+(37, 'pending', '2025-06-18', '2025-08-22', 'morning', NULL, 8, 3),
+(38, 'done', '2025-06-23', '2025-06-27', 'evining', 27, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -257,10 +255,10 @@ CREATE TABLE `news_events` (
 --
 
 INSERT INTO `news_events` (`news_event_id`, `title`, `description`, `news_events_date`, `type`, `max_units_needed`, `center_id`, `data_of_relais`, `blood_type_needed`) VALUES
-(16, 'help hamza', 'hamza need hep since he was a kid', '2025-06-18', 'event', 3, 7, '2025-06-16', 'AB+ A+ O-'),
-(17, 'test news', 'please work', NULL, 'news', NULL, 7, '2025-06-16', NULL),
-(18, 'monir needs you', 'monir has bwasr really bad and need help', '2025-06-20', 'event', 3, 7, '2025-06-16', 'O-'),
-(19, 'test news2', 'we are here testing the news gain', NULL, 'news', NULL, 7, '2025-06-16', NULL);
+(24, 'ahmed needs you', 'ahmed need A+ blood for his brain cancer', '2025-07-24', 'event', 2, 7, '2025-06-23', 'A+ AB+'),
+(27, 'help kids', 'donation event for kids who have cancer', '2025-09-25', 'event', 5, 7, '2025-06-23', 'ALL'),
+(28, 'donation therepy', 'donating blood may save your life', NULL, 'news', NULL, 7, '2025-06-23', NULL),
+(29, 'save a life', 'by donating one tie you at list saved a person', NULL, 'news', NULL, 7, '2025-06-23', NULL);
 
 -- --------------------------------------------------------
 
@@ -288,9 +286,10 @@ INSERT INTO `users` (`user_id`, `user_full_name`, `user_email`, `user_password`,
 (4, 'wahiba BASRI', 'jomanalola25@gmail.com', '$2y$10$VPOOvXwyZE8f9bdAb7JNuOVWpb8.rwq8ZISamGcqwE9/GtCJ1H8..', 'tanger kasbah', '0606061877', NULL, 16),
 (6, 'monir MRISI', 'marnissimounir05@gmail.com', '$2y$10$zTLExj33GHwsSHh2kUHDDuJ1VIXy67reiaegaMZb1rjka/NtcIg.y', 'darbaida dradb', '1234567891', NULL, 17),
 (7, 'sami basri', 'jornojovana9@gmail.com', '$2y$10$4g/CZvfCCp5Iy3qdOhBwjexPM0wlheHgZuHYDOFZgy33qHbUzBTXO', 'tanger mrchan', '1234567892', NULL, 10),
-(19, 'brahim rabi3', 'brahim@gmail.com', '$2y$10$XYflsFZ51oVg/VjdSJeu0O50HPBdKk7jYNC5Po5/Fr94Bvtp2jTHa', 'tanger sakaya', '1233214354', NULL, 17),
 (20, 'nour cherif', 'nourchirawi12@gmail.com', '$2y$10$hypqZZ44mJuNexxo5SiA5.ipYaRe2zKMWnRlDgGzpUAJLHi6f3YbG', 'tanger DRADEB', '12245436543', NULL, 10),
-(21, 'mohamed sombol', 'sombol@gmail.com', '$2y$10$1DNLEo.x3/Vxvz9bHdTsg.4cdz9A8bSTcoDlz.0qNvuMJ0hRnuO0S', 'tanger hayani', '1213456453', NULL, 11);
+(21, 'mohamed sombol', 'sombol@gmail.com', '$2y$10$1DNLEo.x3/Vxvz9bHdTsg.4cdz9A8bSTcoDlz.0qNvuMJ0hRnuO0S', 'tanger hayani', '1213456453', NULL, 11),
+(23, 'brahim rabi3', 'brahim@gmail.com', '$2y$10$sCB8Ib9Uqt6lJ5w9e9DSEOujSe/X0uf1C3MjdJEdBK.ti6bpwSYiO', 'tanger zan9a_chok', '14725836997', NULL, 16),
+(24, 'wahiba_zayn garen', 'sdcihnz@gmail.com', '$2y$10$wZ.3bd2GTHQP8J5.sIYZdu8cMMen2rGpYj2NsTh8cRFxnpfyVC7ma', 'chawn chalal', '1478523698', NULL, 12);
 
 --
 -- Indexes for dumped tables
@@ -392,19 +391,19 @@ ALTER TABLE `donation_centers`
 -- AUTO_INCREMENT for table `donation_request`
 --
 ALTER TABLE `donation_request`
-  MODIFY `request_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `request_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `news_events`
 --
 ALTER TABLE `news_events`
-  MODIFY `news_event_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `news_event_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

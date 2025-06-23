@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($shesk_if_already_there)) {
                 echo json_encode(["status" => "error", "message" => "you already have donation request for this urgent need"]);
             } else {
-                if (str_contains(strtolower($event_date_and_unit["blood_type_needed"]), strtolower($_SESSION["user"]["blood_type_name"])) || $event_date_and_unit["blood_type_needed"] == "all" || $_SESSION["user"]["blood_type"] == "i dont know") {
+                if (str_contains(strtolower($event_date_and_unit["blood_type_needed"]), strtolower($_SESSION["user"]["blood_type_name"])) || strtolower($event_date_and_unit["blood_type_needed"]) == "all" || $_SESSION["user"]["blood_type"] == "i dont know") {
                     $add_request = $con->prepare("INSERT INTO donation_request(status,request_date,donation_date,donation_time_stamp,news_event_id,center_id,user_id) values('pending',NOW(),?,?,?,NULL,?)");
                     $add_request->execute([$formated_date, $_POST["time_stemp"], $_SESSION["event_id"], $_SESSION["user"]["user_id"]]);
                     echo json_encode(["status" => "done", "message" => "your donation request was added"]);

@@ -5,6 +5,8 @@ session_start();
 if (!isset($_SESSION["admin"])) {
     header("Location: ../user pages/login.php");
 }
+$data1 = "";
+$data2 = "";
 
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -22,7 +24,6 @@ $event_request = $event_request->fetchAll(PDO::FETCH_ASSOC);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["action"] == "change") {
         $change = $con->query("UPDATE donation_request SET status = '" . $_POST["new_statu"] . "' WHERE request_id = " . (int)$_POST["request_id"]);
-        echo json_encode(["status" => "ok", "message" => "the status has changed successfully."]);
     } elseif ($_POST["action"] == "send_as_will") {
         $change = $con->query("UPDATE donation_request SET status = '" . $_POST["new_statu"] . "' WHERE request_id = " . (int)$_POST["request_id"]);
         try {
@@ -48,6 +49,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(["status" => "error", "message" => "an error acured sending the gmail try sending it from sending gmail page."]);
         }
     }
+    $normal_request = $con->query("SELECT donation_request.*,user_full_name,user_email,blood_type_name,phone FROM donation_request join users on donation_request.user_id = users.user_id JOIN blood_types on users.blood_type_id = blood_types.blood_type_id WHERE center_id is not null and center_id =" . $_SESSION["admin"]["center_id"]);
+    $normal_request = $normal_request->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($normal_request as $request) {
+        $user_full_name = htmlspecialchars($request['user_full_name']);
+        $user_email = htmlspecialchars($request['user_email']);
+        $phone = htmlspecialchars($request['phone']);
+        $blood_type_name = htmlspecialchars($request['blood_type_name']);
+        $request_date = htmlspecialchars($request['request_date']);
+        $donation_date = htmlspecialchars($request['donation_date']);
+        $donation_time_stamp = htmlspecialchars($request['donation_time_stamp']);
+        $status = htmlspecialchars($request['status']);
+        $request_id = htmlspecialchars($request['request_id']);
+
+        $data1 .= <<<HTML
+                        <tr class="ho" data-name="$user_full_name" data-status="$status">
+                        <td>$user_full_name</td>
+                        <td>$user_email</td>
+                        <td>$phone</td>
+                        <td>$blood_type_name</td>
+                        <td>$request_date</td>
+                        <td>$donation_date</td>
+                        <td>$donation_time_stamp</td>
+                        <td><p class="$status">$status</p></td>
+                        <td>
+                            <button class="change" data-name="$user_full_name" data-id="$request_id" data-email="$user_email">Change status</button>
+                        </td>
+                        </tr>
+                HTML;
+    }
+    $event_request = $con->query("SELECT donation_request.*,title,users.user_full_name,user_email,blood_type_name,phone FROM donation_request JOIN news_events on donation_request.news_event_id = news_events.news_event_id JOIN users on donation_request.user_id = users.user_id JOIN blood_types on users.blood_type_id = blood_types.blood_type_id WHERE donation_request.center_id is null");
+    $event_request = $event_request->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($event_request as $request) {
+        // Sanitize all values that come from user or database
+        $user_full_name = htmlspecialchars($request['user_full_name'], ENT_QUOTES, 'UTF-8');
+        $user_email = htmlspecialchars($request['user_email'], ENT_QUOTES, 'UTF-8');
+        $phone = htmlspecialchars($request['phone'], ENT_QUOTES, 'UTF-8');
+        $blood_type_name = htmlspecialchars($request['blood_type_name'], ENT_QUOTES, 'UTF-8');
+        $request_date = htmlspecialchars($request['request_date'], ENT_QUOTES, 'UTF-8');
+        $donation_date = htmlspecialchars($request['donation_date'], ENT_QUOTES, 'UTF-8');
+        $donation_time_stamp = htmlspecialchars($request['donation_time_stamp'], ENT_QUOTES, 'UTF-8');
+        $status = htmlspecialchars($request['status'], ENT_QUOTES, 'UTF-8');
+        $title = htmlspecialchars($request['title'], ENT_QUOTES, 'UTF-8');
+        $request_id = htmlspecialchars($request['request_id'], ENT_QUOTES, 'UTF-8');
+
+        $data2 .= <<<HTML
+                    <tr class="ho" data-name="$user_full_name" data-status="$status">
+                    <td>$user_full_name</td>
+                    <td>$user_email</td>
+                    <td>$phone</td>
+                    <td>$blood_type_name</td>
+                    <td>$request_date</td>
+                    <td>$donation_date</td>
+                    <td>$donation_time_stamp</td>
+                    <td><p class="$status">$status</p></td>
+                    <td>$title</td>
+                    <td>
+                        <button class="change" data-id="$request_id" data-email="$user_email">Change status</button>
+                    </td>
+                    </tr>
+            HTML;
+    }
+    echo json_encode(["status" => "ok", "message" => "the status has changed successfully.", "data1" => $data1, "data2" => $data2]);
     exit();
 }
 ?>
@@ -96,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>status</th>
                         <th>Action</th>
                     </thead>
-                    <tbody>
+                    <tbody class="tbody_normal">
                         <?php
                         foreach ($normal_request as $request) {
                             $user_full_name = htmlspecialchars($request['user_full_name']);
@@ -142,7 +205,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>Event name</th>
                         <th>Action</th>
                     </thead>
-                    <tbody>
+                    <tbody class="tbody_event">
                         <?php
                         foreach ($event_request as $request) {
                             // Sanitize all values that come from user or database
@@ -208,7 +271,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </dialog>
         </div>
     </main>
-    <script src="../admen scripts/request.js"></script>
+    <script src="../admen scripts/request.js?v=0.1.5"></script>
 </body>
 
 </html>

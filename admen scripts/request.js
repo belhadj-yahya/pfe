@@ -45,15 +45,15 @@ $(document).ready(function(){
     
 
     // change request status code start here
-    $(".change").each(function(){
-        $(this).on("click",function(){
-            request_id = $(this).data("id")
-            user_email = $(this).data("email")
-            user_full_name = $(this).data("name")
-            blood_type = $(this).data("blood_type")
-            $("#add")[0].showModal()
-        })
-    })
+    $("tbody").on("click", ".change", function () {
+        $(".error1").text("")
+    request_id = $(this).data("id");
+    user_email = $(this).data("email");
+    user_full_name = $(this).data("name");
+    blood_type = $(this).data("blood_type");
+    
+    $("#add")[0].showModal();
+});
     
         $(".close").on("click",function(){
             $("#add")[0].close()
@@ -75,9 +75,12 @@ $(document).ready(function(){
                     let new_data = JSON.parse(data)
                     if(new_data.status == "ok"){
                         $(".error1").text(new_data.message).css("color","green");
+                        $(".tbody_normal").html(new_data.data1)
+                        $(".tbody_event").html(new_data.data2)
                         setTimeout(() => {
-                            window.location.reload()
-                        }, 1000);
+                            $(".error1").text()
+                            $("#add")[0].close()
+                        }, 500);
                     }else{
                         $(".error1").text(new_data.message).css("color","red");
                     }
@@ -90,12 +93,15 @@ $(document).ready(function(){
                      let new_data = JSON.parse(data)
                     if(new_data.status == "ok"){
                         $(".error1").text(new_data.message).css("color","green");
+                        $(".tbody_normal").html(new_data.data1)
+                        $(".tbody_event").html(new_data.data2)
                         setTimeout(() => {
-                            window.location.reload()
-                        }, 1000);
+                            $("#add")[0].close()
+                        }, 500);
                     }else{
                         $(".error1").text("Error acured").css("color","red");
                     }
+                    
                 }
             );
         }

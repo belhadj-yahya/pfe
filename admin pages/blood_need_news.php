@@ -7,23 +7,57 @@ if (!isset($_SESSION["admin"])) {
 $blood_types = $con->query("SELECT * from blood_types");
 $blood_types = $blood_types->fetchAll(PDO::FETCH_ASSOC);
 $events = $con->query("SELECT * FROM news_events WHERE type = 'event'");
+$events = $events->fetchAll(PDO::FETCH_ASSOC);
 $news = $con->query("SELECT * FROM news_events WHERE type = 'news'");
 $news = $news->fetchAll(PDO::FETCH_ASSOC);
-$events = $events->fetchAll(PDO::FETCH_ASSOC);
+
 $data = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["action"] == "events") {
         $add = $con->prepare("INSERT INTO news_events(title,description,news_events_date,type,max_units_needed,center_id,data_of_relais,blood_type_needed) VALUES(?,?,?,'event',?,?,NOW(),?)");
         if ($add->execute([$_POST["event_title"], $_POST["event_content"], $_POST["event_date"], $_POST["units"], $_SESSION["admin"]["center_id"], strtoupper($_POST["event_blood_type"])])) {
-            echo json_encode(["status" => "done", "message" => "urgent blood need was added"]);
+            $events = $con->query("SELECT * FROM news_events WHERE type = 'event'");
+            $events = $events->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($events as $event) {
+                $data .= <<<HTML
+                                <tr data-evnet_title="{$event['title']}" data-event_blood_type="{$event['blood_type_needed']}">
+                                    <td>{$event["title"]}</td>
+                                    <td style="width:200px">{$event["description"]}</td>
+                                    <td>{$event["data_of_relais"]}</td>
+                                    <td>{$event["news_events_date"]}</td>
+                                    <td>{$event["max_units_needed"]}</td>
+                                    <td>{$event["blood_type_needed"]}</td>
+                                    <td>
+                                        <button class="delete" data-event_id="{$event['news_event_id']}" data-table=".events_tbody">Delete</button>
+                                    </td>
+                                </tr>
+                            HTML;
+            }
+
+            echo json_encode(["status" => "done", "message" => "urgent blood need was added", "data" => $data]);
         } else {
             echo json_encode(["status" => "error", "message" => "an error happned try again later"]);
         }
+        //this part for adding newsq
     } else if ($_POST['action'] == "news") {
         $add = $con->prepare("INSERT INTO news_events(title,description,news_events_date,type,max_units_needed,center_id,data_of_relais,blood_type_needed) VALUES(?,?,NULL,'news',NULL,?,NOW(),NULL)");
         if ($add->execute([$_POST["news_title"], $_POST["news_content"], $_SESSION["admin"]["center_id"]])) {
-            echo json_encode(["status" => "done", "message" => "new artical was added"]);
+            $news = $con->query("SELECT * FROM news_events WHERE type = 'news'");
+            $news = $news->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($news as $new) {
+                $data .= <<<HTML
+                                <tr data-news_title="{$new['title']}" class="news_tr">
+                                    <td class="test">{$new["title"]}</td>
+                                    <td class='small'>{$new["description"]}</td>
+                                    <td style="padding-inline: 50px;">{$new["data_of_relais"]}</td>
+                                    <td>
+                                        <button class="delete" data-event_id="{$new['news_event_id']}" data-table=".news_tbody">Delete</button>
+                                    </td>
+                                </tr>
+                            HTML;
+            }
+            echo json_encode(["status" => "done", "message" => "new artical was added", "data" => $data]);
         } else {
             echo json_encode(["status" => "error", "message" => "an error happned try again later"]);
         }
@@ -105,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="">All types</option>
                         <?php
                         foreach ($blood_types as $type) {
-                            if($type["blood_type_name"] != "I don't know"){
+                            if ($type["blood_type_name"] != "I don't know") {
                                 echo "<option value='" . $type["blood_type_name"] . "'>" . $type["blood_type_name"] . "</option>";
                             }
                         }
@@ -124,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <th>Action</th>
                         </thead>
                         <tbody class="events_tbody">
-                        <?php
+                            <?php
                             foreach ($events as $event) {
                                 // Escape all values
                                 $title = htmlspecialchars($event['title']);

@@ -56,6 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $created_at = htmlspecialchars($req["created_at"]);
                 $description = htmlspecialchars($req["Description"]);
                 $urgencyClass = strtolower($req["status"]);
+                $locatoin = strtolower($req["location"]);
 
                 $new_data .= <<<HTML
                     <tr data-name="$hospital_name" data-status="$status" data-center_status="$request_status">
@@ -74,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <td>$blood_type_name</td>
             <td>$needed_units</td>
             <td>$needed_at</td>
+            <td>$locatoin</td>
             <td><span class="$urgencyClass">$status</span></td>
             <td><span class="$request_status">$request_status</span></td>
             <td>
@@ -148,6 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>Blood Type</th>
                         <th>Units</th>
                         <th>Date Needed</th>
+                        <th>Location</th>
                         <th>Urgency</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -167,6 +170,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $created_at = htmlspecialchars($req["created_at"]);
                             $description = htmlspecialchars($req["Description"]);
                             $urgencyClass = strtolower($req["status"]);
+                            $locatoin = strtolower($req["location"]);
+
 
                             echo <<<HTML
                                 <tr data-name="$hospital_name" data-status="$status" data-center_status="$request_status">
@@ -185,6 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <td>$blood_type_name</td>
                             <td>$needed_units</td>
                             <td>$needed_at</td>
+                            <td>$locatoin</td>
                             <td><span class="$urgencyClass">$status</span></td>
                             <td><span class="$request_status">$request_status</span></td>
                             <td>

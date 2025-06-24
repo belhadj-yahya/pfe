@@ -73,10 +73,7 @@ $(document).ready(function () {
                 color: "#9e2830"
             })
         }
-        if(phone.length != 10 && phone.length < 0){
-            console.log(phone.length)
-            console.log(phone.length == 10)
-            console.log(phone.length > 0)
+        if(!/^\+?\d{10,13}$/.test(phone)){
             sheck = false;
             $(".error").text("phone number not valid!").css({
                 display:"block",

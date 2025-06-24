@@ -7,7 +7,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "done";
     exit();
 }
-$blood_needs = $con->query("SELECT news_event_id,blood_type_needed,title,description,news_events_date,center_location,max_units_needed,center_name,news_events.center_id FROM news_events JOIN donation_centers on news_events.center_id = donation_centers.center_id WHERE type = 'event' AND data_of_relais <= NOW() AND news_events_date > NOW()");
+$blood_needs = $con->query("SELECT 
+    news_events.news_event_id,
+    blood_type_needed,
+    title,
+    description,
+    news_events_date,
+    center_location,
+    max_units_needed,
+    center_name,
+    news_events.center_id
+FROM 
+    news_events
+JOIN 
+    donation_centers ON news_events.center_id = donation_centers.center_id
+WHERE 
+    type = 'event'
+    AND data_of_relais <= NOW()
+    AND news_events_date > NOW()
+    AND (
+        SELECT COUNT(donation_request.request_id)
+        FROM donation_request
+        WHERE 
+            donation_request.status = 'done'
+            AND donation_request.news_event_id = news_events.news_event_id
+    ) < news_events.max_units_needed;
+");
 $blood_needs = $blood_needs->fetchAll(PDO::FETCH_ASSOC);
 $news = $con->query("SELECT data_of_relais,title,description,center_name FROM news_events JOIN donation_centers on news_events.center_id = donation_centers.center_id WHERE type = 'news' AND data_of_relais <= NOW()");
 $news = $news->fetchAll(PDO::FETCH_ASSOC);

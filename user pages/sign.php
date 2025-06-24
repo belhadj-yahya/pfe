@@ -10,8 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check_user = $con->prepare("SELECT user_id FROM users WHERE user_email = ? OR phone = ?");
         $check_user->execute([$email, $phone]);
         $check_user = $check_user->fetch(PDO::FETCH_ASSOC);
-        if (empty($check_user)) {
-            $card_path = $relativePath ?? null;
+        $check_admin = $con->prepare("SELECT admen_id FROM admins WHERE  admen_email = ? OR phone = ?");
+        $check_admin->execute([$email, $phone]);
+        $check_admin = $check_admin->fetch(PDO::FETCH_ASSOC);
+        if (empty($check_user) && empty($check_admin)) {
             $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
             $add_user = $con->prepare("INSERT INTO users(user_full_name,user_email,user_password,location,phone,blood_type_id) VALUES(?,?,?,?,?,?)");
             if ($add_user->execute([$_POST["f_name"] . " " . $_POST["l_name"], $email, $password, $_POST["city"] . " " . $_POST["street"], $_POST["phone_number"], $_POST["blood_type_id"]])) {
@@ -122,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </main>
     <script src="/pfe/jquery-3.7.1.js"></script>
-    <script src="/pfe/user scripts/sign.js?v=0.1.7"></script>
+    <script src="/pfe/user scripts/sign.js?v=0.1.9"></script>
 </body>
 
 </html>

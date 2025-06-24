@@ -23,9 +23,6 @@ $(document).ready(function () {
                 }
             });
             
-            
-            
-               
                 $("#datepicker").on("change",function(){
                     console.log("date has change");
                     $.post("/pfe/user pages/request.php",{data:"date_change",new_date:$("#datepicker").val()},function(response){

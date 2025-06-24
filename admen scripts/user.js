@@ -57,7 +57,7 @@ $(document).ready(function(){
             errorElement.text("Password must be at least 8 characters long.").show();
             return;
         }
-        if(phone.length != 10){
+        if(!/^\+?\d{10,13}$/.test(phone)){
             errorElement.text("phone number must be 10 characters long.").show();
             return;
         }
@@ -137,8 +137,7 @@ $("#confirmEdit").on("click", function () {
         alert("Please fill in all fields.");
         return;
     }
-
-    if(phone.length != 10){
+    if(!/^\+?\d{10,13}$/.test(phone)){
         errorElement.text("phone number must be 10 characters long.").show();
         return;
     }

@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
     console.log("hello")
     $(".error").hide()
@@ -5,17 +7,18 @@ $(document).ready(function () {
         e.preventDefault();
         console.log("we clicked")
         let values = [
-            $("#name").val().trim(),
-            $("#persone").val().trim(),
+            $("#name").val().trim().replace(/\s+/g, "_"),
+            $("#persone").val().trim().replace(/\s+/g, "_"),
             $("#email").val().trim(),
             $("#phone").val().trim(),
             $("#blood_type").val(),
             $("#units").val().trim(),
+            $("#location").val().trim().replace(/\s+/g, "_"),
             $("#date").val().trim(),
             $("#level").val().trim(),
             $("#message").val().trim(),
             $("#center").val(),
-            $("#name_of_person").val().trim()
+            $("#name_of_person").val().trim().replace(/\s+/g, "_")
 
         ];
 
@@ -37,12 +40,21 @@ $(document).ready(function () {
             phone: values[3],
             blood_type: values[4],
             units: values[5],
-            date: values[6],
-            level: values[7],
-            message: values[8],
-            center: values[9],
-            in_need_name: values[10]
+            location: values[6],
+            date: values[7],
+            level: values[8],
+            message: values[9],
+            center: values[10],
+            in_need_name: values[11]
         };
+        if(!/^\+?\d{10,13}$/.test(postData.phone)){
+            $(".error").text("phone number not valid").css({
+                color:"red",
+                display:"block"
+            })
+            return
+        }
+        
         $.ajax({
             url:"/pfe/hospital_page/index.php",
             method: "POST",

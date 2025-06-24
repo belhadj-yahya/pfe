@@ -12,7 +12,7 @@
     if (isset($_SESSION["user"])) {
         echo "<a href='/pfe/user pages/account.php' class='acount'>Acount</a>";
     } else {
-        echo "<a href='user pages/login.php' class='login'>log in</a>";
+        echo "<a href='/pfe/user pages/login.php' class='login'>log in</a>";
     }
     ?>
     <button class="open_button">&#9776;</button>

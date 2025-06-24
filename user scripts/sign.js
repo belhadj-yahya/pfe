@@ -42,10 +42,8 @@ $(document).ready(function(){
         console.log("we are here baby")
         console.log(phone_number.length)
         console.log(phone_number.length >= 13)
-        if(phone_number.length <= 10 || phone_number.length >= 13 || typeof Number(phone_number) != "number"){
+        if(!/^\+?\d{10,13}$/.test(phone_number)){
             console.log("we are in if phone is not valid")
-            console.log(phone_number.length)
-            console.log(typeof Number(phone_number))
             $(".phone_error").text("phone number is not valid").fadeIn();
             sheck = false
         }else{

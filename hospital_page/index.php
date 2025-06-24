@@ -19,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $description = trim($_POST["message"] ?? "");
     $center_id = intval($_POST["center"] ?? 0);
     $in_need_name = trim($_POST["in_need_name"] ?? "");
+    $location = trim($_POST["location"] ?? "");
 
     // Validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_NULL_ON_FAILURE)) {
@@ -30,10 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(["status" => "error", "message" => "Date must be today or in the future"]);
         exit();
     }
-    if (!ctype_digit($phone)) {
-        echo json_encode(["status" => "error", "message" => "Phone number not valid"]);
-        exit();
-    }
     if (filter_var($units, FILTER_VALIDATE_INT) === false || $units <= 0) {
         echo json_encode(["status" => "error", "message" => "Units must be a valid number greater than 0"]);
         exit();
@@ -43,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->execute([
         ':units' => $units,
         ':hospital' => $hospital_name,
-        ':location' => "", // no input provided in your form — leave blank or add field
+        ':location' => $location,
         ':status' => $status,
         ':blood_type' => $blood_type_id,
         ':center_id' => $center_id,
@@ -119,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <option value="">Select blood type</option>
                                 <?php
                                 foreach ($blood_types as $blood) {
-                                    if ($blood["blood_type_name"] != "i dont know") {
+                                    if ($blood["blood_type_name"] != "I don't know") {
                                         echo "<option value='" . $blood["blood_type_id"] . "'>" . $blood["blood_type_name"] . "</option>";
                                     }
                                 }
@@ -150,12 +147,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <textarea name="" id="message"></textarea>
                 </form>
                 <button class="btn">Submit Blood Request</button>
-                <p class="error">error</p>
+                <p class="error"></p>
             </div>
         </div>
     </main>
     <script src="../jquery-3.7.1.js"></script>
-    <script src="scrpit.js"></script>
+    <script src="scrpit.js?v=1.0.3"></script>
 </body>
 
 </html>
